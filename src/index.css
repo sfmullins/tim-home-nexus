@@ -8,33 +8,50 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Tech-focused dark theme with cyberpunk accents */
+    --background: 222 47% 4%;
+    --foreground: 210 40% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 224 27% 8%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 224 27% 8%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 4%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 224 27% 12%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 224 27% 10%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 142 76% 36%;
+    --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 224 27% 12%;
+    --input: 224 27% 12%;
+    --ring: 217 91% 60%;
+
+    /* Custom design tokens */
+    --primary-glow: 217 91% 70%;
+    --accent-glow: 142 76% 46%;
+    --surface: 224 27% 6%;
+    --surface-hover: 224 27% 14%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-glow)) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--accent-glow)) 100%);
+    --gradient-surface: linear-gradient(135deg, hsl(var(--surface)) 0%, hsl(var(--card)) 100%);
+    
+    /* Shadows */
+    --shadow-primary: 0 10px 30px -10px hsl(var(--primary) / 0.3);
+    --shadow-accent: 0 10px 30px -10px hsl(var(--accent) / 0.3);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.2);
 
     --radius: 0.5rem;
 
