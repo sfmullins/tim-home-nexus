@@ -116,7 +116,7 @@ const Dashboard = () => {
         window.location.href = "/files";
         break;
       case "smart-home":
-        console.log("Smart Home clicked");
+        window.location.href = "/smart-home";
         break;
       case "downloads":
         console.log("Downloads clicked - will open μTorrent");
