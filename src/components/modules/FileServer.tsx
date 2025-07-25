@@ -90,6 +90,15 @@ const FileServer = () => {
     }
   };
 
+  const handleFileClick = (file: FileItem) => {
+    if (file.type === "folder") {
+      setCurrentPath(file.path);
+    } else {
+      // Handle file opening - could download or preview
+      console.log(`Opening file: ${file.name}`);
+    }
+  };
+
   const handleBackClick = () => {
     const pathParts = currentPath.split("\\");
     if (pathParts.length > 3) { // Keep at least \\TIM-PC\SharedFolders
@@ -244,7 +253,7 @@ const FileServer = () => {
               <Card 
                 key={index} 
                 className="p-4 bg-gradient-surface border-border hover:border-primary/50 transition-all duration-300 cursor-pointer group"
-                onClick={() => handleFolderClick(file)}
+                onClick={() => handleFileClick(file)}
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="p-2 rounded-lg bg-surface group-hover:bg-primary/10 transition-colors duration-300">
@@ -313,7 +322,7 @@ const FileServer = () => {
               <div 
                 key={index}
                 className="p-4 border-b border-border last:border-b-0 hover:bg-surface/50 transition-colors cursor-pointer group"
-                onClick={() => handleFolderClick(file)}
+                onClick={() => handleFileClick(file)}
               >
                 <div className="grid grid-cols-12 gap-4 items-center">
                   <div className="col-span-6 flex items-center gap-3">
