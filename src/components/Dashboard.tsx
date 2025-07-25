@@ -65,13 +65,6 @@ const Dashboard = () => {
     status: "connecting",
     isBookmarked: false
   }, {
-    id: "cloud-storage",
-    title: "Cloud Storage",
-    description: "Personal cloud storage and file sync",
-    icon: "cloud",
-    status: "online",
-    isBookmarked: false
-  }, {
     id: "game-streaming",
     title: "Game Streaming",
     description: "Stream games from Tim to your device",
@@ -119,10 +112,7 @@ const Dashboard = () => {
         navigate("/smart-home");
         break;
       case "downloads":
-        console.log("Downloads clicked - will open μTorrent");
-        break;
-      case "cloud-storage":
-        console.log("Cloud Storage clicked");
+        navigate("/downloads");
         break;
       case "game-streaming":
         console.log("Game Streaming clicked");
