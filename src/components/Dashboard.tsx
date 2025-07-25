@@ -31,9 +31,13 @@ const SortableModuleCard = (props: SortableModuleCardProps) => {
     transform: CSS.Transform.toString(transform),
     transition
   };
-  return <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <ModuleCard {...props} isDragging={isDragging} />
-    </div>;
+  return (
+    <div ref={setNodeRef} style={style} {...attributes}>
+      <div {...listeners} className="cursor-grab active:cursor-grabbing">
+        <ModuleCard {...props} isDragging={isDragging} />
+      </div>
+    </div>
+  );
 };
 const Dashboard = () => {
   const navigate = useNavigate();
