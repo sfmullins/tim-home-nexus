@@ -22,7 +22,16 @@ export const useBookmarks = () => {
         setBookmarkedIds(JSON.parse(saved));
       } catch (error) {
         console.error('Failed to parse bookmarks:', error);
+        // Set defaults if parsing fails
+        const defaults = ["file-server", "smart-home", "downloads"];
+        setBookmarkedIds(defaults);
+        localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(defaults));
       }
+    } else {
+      // Set default bookmarks on first load
+      const defaults = ["file-server", "smart-home", "downloads"];
+      setBookmarkedIds(defaults);
+      localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(defaults));
     }
   }, []);
 
@@ -38,6 +47,9 @@ export const useBookmarks = () => {
     } else if (bookmarkedIds.length < MAX_BOOKMARKS) {
       // Add bookmark
       saveBookmarks([...bookmarkedIds, moduleId]);
+    } else {
+      // Show message when full
+      alert(`Quick access full (${bookmarkedIds.length}/${MAX_BOOKMARKS}). Remove a bookmark first.`);
     }
   };
 
