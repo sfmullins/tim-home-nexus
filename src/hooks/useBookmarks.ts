@@ -36,19 +36,26 @@ export const useBookmarks = () => {
   }, []);
 
   const saveBookmarks = (ids: string[]) => {
+    console.log('Saving bookmarks:', ids);
     setBookmarkedIds(ids);
     localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(ids));
   };
 
   const toggleBookmark = (moduleId: string) => {
+    console.log('Toggle bookmark called for:', moduleId);
+    console.log('Current bookmarked IDs:', bookmarkedIds);
+    
     if (bookmarkedIds.includes(moduleId)) {
       // Remove bookmark
+      console.log('Removing bookmark');
       saveBookmarks(bookmarkedIds.filter(id => id !== moduleId));
     } else if (bookmarkedIds.length < MAX_BOOKMARKS) {
       // Add bookmark
+      console.log('Adding bookmark');
       saveBookmarks([...bookmarkedIds, moduleId]);
     } else {
       // Show message when full
+      console.log('Bookmarks full');
       alert(`Quick access full (${bookmarkedIds.length}/${MAX_BOOKMARKS}). Remove a bookmark first.`);
     }
   };

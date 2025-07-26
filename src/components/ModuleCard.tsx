@@ -55,6 +55,7 @@ const ModuleCard = ({
             className="absolute top-2 right-2 opacity-60 hover:opacity-100 z-10"
             onClick={(e) => {
               e.stopPropagation();
+              console.log('Bookmark button clicked for:', module.id);
               onBookmarkToggle(module.id);
             }}
             disabled={!canBookmark(module.id)}
