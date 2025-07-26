@@ -119,10 +119,10 @@ const Dashboard = () => {
         navigate("/downloads");
         break;
       case "game-streaming":
-        console.log("Game Streaming clicked");
+        navigate("/game-streaming");
         break;
       case "vpn-access":
-        console.log("VPN Access clicked");
+        navigate("/vpn-access");
         break;
     }
   };

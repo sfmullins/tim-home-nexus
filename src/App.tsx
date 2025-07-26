@@ -8,6 +8,8 @@ import NotFound from "./pages/NotFound";
 import FileServer from "./components/modules/FileServer";
 import SmartHome from "./components/modules/SmartHome";
 import Downloads from "./components/modules/Downloads";
+import GameStreaming from "./components/modules/GameStreaming";
+import VpnAccess from "./components/modules/VpnAccess";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +24,8 @@ const App = () => (
           <Route path="/files" element={<FileServer />} />
           <Route path="/smart-home" element={<SmartHome />} />
           <Route path="/downloads" element={<Downloads />} />
+          <Route path="/game-streaming" element={<GameStreaming />} />
+          <Route path="/vpn-access" element={<VpnAccess />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
