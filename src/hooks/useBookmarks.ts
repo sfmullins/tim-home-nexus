@@ -23,7 +23,7 @@ export const useBookmarks = () => {
       } catch (error) {
         console.error('Failed to parse bookmarks:', error);
         // Set defaults if parsing fails
-        const defaults = ["file-server", "smart-home", "downloads"];
+        const defaults = ["file-server", "smart-home", "vpn-access"];
         setBookmarkedIds(defaults);
         localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(defaults));
       }
