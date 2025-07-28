@@ -29,7 +29,7 @@ export const useBookmarks = () => {
       }
     } else {
       // Set default bookmarks on first load
-      const defaults = ["file-server", "smart-home", "downloads"];
+      const defaults = ["file-server", "smart-home", "vpn-access"];
       setBookmarkedIds(defaults);
       localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(defaults));
     }
