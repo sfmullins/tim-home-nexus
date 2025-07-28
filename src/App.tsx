@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import Auth from "./pages/Auth";
 import FileServer from "./components/modules/FileServer";
 import SmartHome from "./components/modules/SmartHome";
 import Downloads from "./components/modules/Downloads";
@@ -21,6 +22,7 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/files" element={<FileServer />} />
           <Route path="/smart-home" element={<SmartHome />} />
           <Route path="/downloads" element={<Downloads />} />
