@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,8 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Server } from "lucide-react";
+import { Loader2, Server, Mail } from "lucide-react";
+import { PasswordStrength } from "@/components/PasswordStrength";
+import ReCAPTCHA from "react-google-recaptcha";
 import type { User, Session } from '@supabase/supabase-js';
 
 const Auth = () => {
@@ -16,6 +19,9 @@ const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [emailSent, setEmailSent] = useState(false);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -48,6 +54,16 @@ const Auth = () => {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!captchaToken) {
+      toast({
+        title: "Captcha required",
+        description: "Please complete the captcha verification.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -57,7 +73,8 @@ const Auth = () => {
         email,
         password,
         options: {
-          emailRedirectTo: redirectUrl
+          emailRedirectTo: redirectUrl,
+          captchaToken
         }
       });
 
@@ -75,7 +92,11 @@ const Auth = () => {
             variant: "destructive"
           });
         }
+        // Reset captcha on error
+        recaptchaRef.current?.reset();
+        setCaptchaToken(null);
       } else {
+        setEmailSent(true);
         toast({
           title: "Check your email",
           description: "We've sent you a confirmation link to complete your registration."
@@ -87,6 +108,9 @@ const Auth = () => {
         description: "An unexpected error occurred. Please try again.",
         variant: "destructive"
       });
+      // Reset captcha on error
+      recaptchaRef.current?.reset();
+      setCaptchaToken(null);
     } finally {
       setLoading(false);
     }
@@ -109,6 +133,12 @@ const Auth = () => {
             description: "Invalid email or password. Please check your credentials.",
             variant: "destructive"
           });
+        } else if (error.message.includes("Email not confirmed")) {
+          toast({
+            title: "Email not confirmed",
+            description: "Please check your email and click the confirmation link before signing in.",
+            variant: "destructive"
+          });
         } else {
           toast({
             title: "Login failed",
@@ -128,6 +158,17 @@ const Auth = () => {
     }
   };
 
+  const isPasswordStrong = () => {
+    const checks = [
+      password.length >= 8,
+      /[A-Z]/.test(password),
+      /[a-z]/.test(password),
+      /\d/.test(password),
+      /[!@#$%^&*(),.?":{}|<>]/.test(password)
+    ];
+    return checks.filter(Boolean).length >= 4;
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-4">
       <Card className="w-full max-w-md">
@@ -143,6 +184,15 @@ const Auth = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {emailSent && (
+            <Alert className="mb-4">
+              <Mail className="h-4 w-4" />
+              <AlertDescription>
+                Check your email for a confirmation link. You may need to check your spam folder.
+              </AlertDescription>
+            </Alert>
+          )}
+          
           <Tabs defaultValue="signin" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="signin">Sign In</TabsTrigger>
@@ -198,14 +248,29 @@ const Auth = () => {
                   <Input
                     id="signup-password"
                     type="password"
-                    placeholder="Create a password"
+                    placeholder="Create a strong password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    minLength={6}
+                    minLength={8}
+                  />
+                  <PasswordStrength password={password} />
+                </div>
+                
+                <div className="flex justify-center">
+                  <ReCAPTCHA
+                    ref={recaptchaRef}
+                    sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" // Test key
+                    onChange={setCaptchaToken}
+                    onExpired={() => setCaptchaToken(null)}
                   />
                 </div>
-                <Button type="submit" className="w-full" disabled={loading}>
+                
+                <Button 
+                  type="submit" 
+                  className="w-full" 
+                  disabled={loading || !isPasswordStrong() || !captchaToken}
+                >
                   {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Create Account
                 </Button>
