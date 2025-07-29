@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      file_access_logs: {
+        Row: {
+          action: string
+          created_at: string
+          error_message: string | null
+          file_path: string
+          file_size: number | null
+          id: string
+          ip_address: unknown | null
+          mime_type: string | null
+          success: boolean
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          error_message?: string | null
+          file_path: string
+          file_size?: number | null
+          id?: string
+          ip_address?: unknown | null
+          mime_type?: string | null
+          success?: boolean
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          error_message?: string | null
+          file_path?: string
+          file_size?: number | null
+          id?: string
+          ip_address?: unknown | null
+          mime_type?: string | null
+          success?: boolean
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
