@@ -32,7 +32,7 @@ const QuickAccessBar = ({ bookmarkedModules, onModuleClick }: QuickAccessBarProp
   };
 
   return (
-    <div className="flex flex-wrap gap-2 sm:gap-4 mb-8 w-full">
+    <div className="flex gap-2 sm:gap-4 mb-8 w-full">
       {bookmarkedModules.map(module => {
         const IconComponent = iconMap[module.icon as keyof typeof iconMap] || Files;
         return (

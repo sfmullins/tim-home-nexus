@@ -19,28 +19,10 @@ export const useBookmarks = () => {
     const saved = localStorage.getItem(BOOKMARKS_KEY);
     const defaults = ["file-server", "smart-home", "vpn-access"];
     
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        // Check if the saved bookmarks contain the old "downloads" - if so, migrate to new defaults
-        if (parsed.includes("downloads")) {
-          console.log('Migrating old bookmarks to new defaults');
-          setBookmarkedIds(defaults);
-          localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(defaults));
-        } else {
-          setBookmarkedIds(parsed);
-        }
-      } catch (error) {
-        console.error('Failed to parse bookmarks:', error);
-        // Set defaults if parsing fails
-        setBookmarkedIds(defaults);
-        localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(defaults));
-      }
-    } else {
-      // Set default bookmarks on first load
-      setBookmarkedIds(defaults);
-      localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(defaults));
-    }
+    // Always force the new defaults to ensure consistency
+    console.log('Setting default bookmarks:', defaults);
+    setBookmarkedIds(defaults);
+    localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(defaults));
   }, []);
 
   const saveBookmarks = (ids: string[]) => {
@@ -64,7 +46,8 @@ export const useBookmarks = () => {
     } else {
       // Show message when full
       console.log('Bookmarks full');
-      alert(`Quick access full (${bookmarkedIds.length}/${MAX_BOOKMARKS}). Remove a bookmark first.`);
+      // Using a more user-friendly message
+      alert(`Quick Access Bar full (${bookmarkedIds.length}/${MAX_BOOKMARKS}). Remove a bookmark first.`);
     }
   };
 
@@ -74,12 +57,12 @@ export const useBookmarks = () => {
 
   const getBookmarkTooltip = (moduleId: string) => {
     if (bookmarkedIds.includes(moduleId)) {
-      return 'Remove from quick access';
+      return `Remove from Quick Access (${bookmarkedIds.length}/${MAX_BOOKMARKS})`;
     }
     if (bookmarkedIds.length >= MAX_BOOKMARKS) {
-      return `Quick access full (${bookmarkedIds.length}/${MAX_BOOKMARKS}). Remove a bookmark first.`;
+      return `Quick Access Bar full (${bookmarkedIds.length}/${MAX_BOOKMARKS}). Remove a bookmark first.`;
     }
-    return `Add to quick access (${bookmarkedIds.length}/${MAX_BOOKMARKS})`;
+    return `Add to Quick Access (${bookmarkedIds.length + 1}/${MAX_BOOKMARKS})`;
   };
 
   return {
