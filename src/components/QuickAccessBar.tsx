@@ -22,6 +22,15 @@ const QuickAccessBar = ({ bookmarkedModules, onModuleClick }: QuickAccessBarProp
     return null;
   }
 
+  const getResponsiveTitle = (moduleId: string, fullTitle: string) => {
+    const shortTitles = {
+      "file-server": "Files",
+      "smart-home": "Home", 
+      "vpn-access": "VPN"
+    };
+    return shortTitles[moduleId as keyof typeof shortTitles] || fullTitle;
+  };
+
   return (
     <div className="flex flex-wrap gap-2 sm:gap-4 mb-8 w-full">
       {bookmarkedModules.map(module => {
@@ -35,7 +44,12 @@ const QuickAccessBar = ({ bookmarkedModules, onModuleClick }: QuickAccessBarProp
             onClick={() => onModuleClick(module.id)}
           >
             <IconComponent className="w-5 h-5 flex-shrink-0" />
-            <span className="truncate">{module.title}</span>
+            <span className="truncate sm:hidden">
+              {getResponsiveTitle(module.id, module.title)}
+            </span>
+            <span className="truncate hidden sm:inline">
+              {module.title}
+            </span>
           </Button>
         );
       })}
