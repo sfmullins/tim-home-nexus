@@ -17,19 +17,27 @@ export const useBookmarks = () => {
 
   useEffect(() => {
     const saved = localStorage.getItem(BOOKMARKS_KEY);
+    const defaults = ["file-server", "smart-home", "vpn-access"];
+    
     if (saved) {
       try {
-        setBookmarkedIds(JSON.parse(saved));
+        const parsed = JSON.parse(saved);
+        // Check if the saved bookmarks contain the old "downloads" - if so, migrate to new defaults
+        if (parsed.includes("downloads")) {
+          console.log('Migrating old bookmarks to new defaults');
+          setBookmarkedIds(defaults);
+          localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(defaults));
+        } else {
+          setBookmarkedIds(parsed);
+        }
       } catch (error) {
         console.error('Failed to parse bookmarks:', error);
         // Set defaults if parsing fails
-        const defaults = ["file-server", "smart-home", "vpn-access"];
         setBookmarkedIds(defaults);
         localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(defaults));
       }
     } else {
       // Set default bookmarks on first load
-      const defaults = ["file-server", "smart-home", "vpn-access"];
       setBookmarkedIds(defaults);
       localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(defaults));
     }
