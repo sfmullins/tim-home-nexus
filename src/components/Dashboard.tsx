@@ -2,45 +2,12 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import type { User, Session } from '@supabase/supabase-js';
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, rectSortingStrategy } from '@dnd-kit/sortable';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import ModuleCard from "./ModuleCard";
 import DashboardHeader from "./DashboardHeader";
 import ServerStatus from "./ServerStatus";
 import QuickAccessBar from "./QuickAccessBar";
 import { useBookmarks, ModuleData } from "@/hooks/useBookmarks";
-interface SortableModuleCardProps {
-  module: ModuleData;
-  onClick: () => void;
-  onBookmarkToggle: (moduleId: string) => void;
-  canBookmark: (moduleId: string) => boolean;
-  getBookmarkTooltip: (moduleId: string) => string;
-}
-const SortableModuleCard = (props: SortableModuleCardProps) => {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging
-  } = useSortable({
-    id: props.module.id
-  });
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition
-  };
-  return (
-    <div ref={setNodeRef} style={style} {...attributes}>
-      <div {...listeners} className="cursor-grab active:cursor-grabbing">
-        <ModuleCard {...props} isDragging={isDragging} />
-      </div>
-    </div>
-  );
-};
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
@@ -52,10 +19,11 @@ const Dashboard = () => {
     canBookmark,
     getBookmarkTooltip
   } = useBookmarks();
+
   const [modules, setModules] = useState<ModuleData[]>([{
     id: "file-server",
     title: "File Server",
-    description: "Browse, upload and download files from T.I.M's shared folders",
+    description: "Browse, upload and download files from TIM's shared folders",
     icon: "folder",
     status: "online",
     isBookmarked: false,
@@ -79,7 +47,7 @@ const Dashboard = () => {
   }, {
     id: "game-streaming",
     title: "Game Streaming",
-    description: "Stream games from T.I.M to your device",
+    description: "Stream games from TIM to your device",
     icon: "gamepad",
     status: "offline",
     isBookmarked: false,
@@ -131,22 +99,7 @@ const Dashboard = () => {
       isBookmarked: bookmarkedIds.includes(module.id)
     })));
   }, [bookmarkedIds]);
-  const sensors = useSensors(useSensor(PointerSensor), useSensor(KeyboardSensor, {
-    coordinateGetter: sortableKeyboardCoordinates
-  }));
-  const handleDragEnd = (event: DragEndEvent) => {
-    const {
-      active,
-      over
-    } = event;
-    if (over && active.id !== over.id) {
-      setModules(items => {
-        const oldIndex = items.findIndex(item => item.id === active.id);
-        const newIndex = items.findIndex(item => item.id === over.id);
-        return arrayMove(items, oldIndex, newIndex);
-      });
-    }
-  };
+
   const handleModuleClick = (moduleId: string) => {
     switch (moduleId) {
       case "file-server":
@@ -169,6 +122,15 @@ const Dashboard = () => {
 
   // Get bookmarked modules for quick access
   const bookmarkedModules = modules.filter(module => bookmarkedIds.includes(module.id));
+
+  // Sort modules alphabetically and split by purchase status
+  const purchasedModules = modules
+    .filter(module => module.purchased)
+    .sort((a, b) => a.title.localeCompare(b.title));
+  
+  const unpurchasedModules = modules
+    .filter(module => !module.purchased)
+    .sort((a, b) => a.title.localeCompare(b.title));
 
   // Show loading state while checking authentication
   if (loading) {
@@ -199,11 +161,14 @@ const Dashboard = () => {
 
         <div className="bg-card border border-border rounded-lg p-6">
           <h2 className="text-2xl font-bold text-foreground mb-6">Store</h2>
-          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-            <SortableContext items={modules.map(m => m.id)} strategy={rectSortingStrategy}>
+          
+          {/* Purchased Modules Section */}
+          {purchasedModules.length > 0 && (
+            <div className="mb-8">
+              <h3 className="text-lg font-semibold text-foreground mb-4">Purchased</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {modules.map(module => (
-                  <SortableModuleCard 
+                {purchasedModules.map(module => (
+                  <ModuleCard 
                     key={module.id} 
                     module={module} 
                     onClick={() => handleModuleClick(module.id)} 
@@ -213,11 +178,31 @@ const Dashboard = () => {
                   />
                 ))}
               </div>
-            </SortableContext>
-          </DndContext>
+            </div>
+          )}
+
+          {/* Unpurchased Modules Section */}
+          {unpurchasedModules.length > 0 && (
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-4">Available for Purchase</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {unpurchasedModules.map(module => (
+                  <ModuleCard 
+                    key={module.id} 
+                    module={module} 
+                    onClick={() => handleModuleClick(module.id)} 
+                    onBookmarkToggle={toggleBookmark} 
+                    canBookmark={canBookmark} 
+                    getBookmarkTooltip={getBookmarkTooltip} 
+                  />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
   );
 };
+
 export default Dashboard;
