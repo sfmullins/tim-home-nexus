@@ -7,6 +7,7 @@ export interface ModuleData {
   icon: string;
   status: "online" | "offline" | "connecting";
   isBookmarked?: boolean;
+  purchased?: boolean;
 }
 
 const BOOKMARKS_KEY = 'tim-bookmarks';

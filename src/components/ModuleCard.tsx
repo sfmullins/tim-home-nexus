@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Star } from "lucide-react";
+import { Star, Files, Home, Download, Cloud, Gamepad2, Shield, ShoppingCart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ModuleData } from "@/hooks/useBookmarks";
 
@@ -29,55 +29,70 @@ const ModuleCard = ({
     connecting: "bg-warning text-warning-foreground"
   };
 
-  const iconMap: { [key: string]: string } = {
-    "folder": "📁",
-    "home": "🏠", 
-    "download": "⬇️",
-    "cloud": "☁️",
-    "gamepad": "🎮",
-    "shield": "🛡️"
+  const iconMap = {
+    "folder": Files,
+    "home": Home, 
+    "download": Download,
+    "cloud": Cloud,
+    "gamepad": Gamepad2,
+    "shield": Shield
   };
+
+  const IconComponent = iconMap[module.icon as keyof typeof iconMap] || Files;
 
   return (
     <Card 
       className={cn(
         "p-6 bg-gradient-surface border-border hover:border-primary/50 transition-all duration-300 cursor-pointer group relative",
-        isDragging && "opacity-50 rotate-2 scale-105"
+        isDragging && "opacity-50 rotate-2 scale-105",
+        !module.purchased && "opacity-60"
       )}
-      onClick={onClick}
+      onClick={module.purchased ? onClick : undefined}
     >
-      {/* Bookmark Button */}
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute top-2 right-2 opacity-60 hover:opacity-100 z-10"
-            onClick={(e) => {
-              e.stopPropagation();
-              console.log('Bookmark button clicked for:', module.id);
-              onBookmarkToggle(module.id);
-            }}
-            disabled={!canBookmark(module.id)}
-          >
-            <Star 
-              className={cn(
-                "w-4 h-4 transition-colors",
-                module.isBookmarked 
-                  ? "fill-accent text-accent" 
-                  : "text-muted-foreground hover:text-accent"
-              )} 
-            />
+      {/* Purchase Overlay for unpurchased modules */}
+      {!module.purchased && (
+        <div className="absolute inset-0 bg-muted/50 rounded-lg flex items-center justify-center z-20">
+          <Button variant="default" size="sm" className="gap-2">
+            <ShoppingCart className="w-4 h-4" />
+            Purchase
           </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>{getBookmarkTooltip(module.id)}</p>
-        </TooltipContent>
-      </Tooltip>
+        </div>
+      )}
+
+      {/* Bookmark Button - only for purchased modules */}
+      {module.purchased && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-2 right-2 opacity-60 hover:opacity-100 z-10"
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log('Bookmark button clicked for:', module.id);
+                onBookmarkToggle(module.id);
+              }}
+              disabled={!canBookmark(module.id)}
+            >
+              <Star 
+                className={cn(
+                  "w-4 h-4 transition-colors",
+                  module.isBookmarked 
+                    ? "fill-accent text-accent" 
+                    : "text-muted-foreground hover:text-accent"
+                )} 
+              />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{getBookmarkTooltip(module.id)}</p>
+          </TooltipContent>
+        </Tooltip>
+      )}
 
       {/* Module Icon */}
-      <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-        {iconMap[module.icon] || "📦"}
+      <div className="p-3 rounded-lg bg-accent/10 mb-4 w-fit group-hover:bg-accent/20 transition-colors duration-300">
+        <IconComponent className="w-8 h-8 text-accent" />
       </div>
       
       {/* Module Info */}

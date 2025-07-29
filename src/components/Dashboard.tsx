@@ -55,38 +55,43 @@ const Dashboard = () => {
   const [modules, setModules] = useState<ModuleData[]>([{
     id: "file-server",
     title: "File Server",
-    description: "Browse, upload and download files from Tim's shared folders",
+    description: "Browse, upload and download files from T.I.M's shared folders",
     icon: "folder",
     status: "online",
-    isBookmarked: false
+    isBookmarked: false,
+    purchased: true
   }, {
     id: "smart-home",
     title: "Smart Home",
     description: "Control and monitor your smart home devices",
     icon: "home",
     status: "online",
-    isBookmarked: false
+    isBookmarked: false,
+    purchased: true
   }, {
     id: "downloads",
     title: "Downloads",
     description: "Manage torrents and downloads remotely",
     icon: "download",
     status: "connecting",
-    isBookmarked: false
+    isBookmarked: false,
+    purchased: false
   }, {
     id: "game-streaming",
     title: "Game Streaming",
-    description: "Stream games from Tim to your device",
+    description: "Stream games from T.I.M to your device",
     icon: "gamepad",
     status: "offline",
-    isBookmarked: false
+    isBookmarked: false,
+    purchased: false
   }, {
     id: "vpn-access",
     title: "VPN Access",
     description: "Secure remote access to your home network",
     icon: "shield",
-    status: "offline",
-    isBookmarked: false
+    status: "online",
+    isBookmarked: false,
+    purchased: true
   }]);
 
   // Check authentication
@@ -192,22 +197,25 @@ const Dashboard = () => {
           onModuleClick={handleModuleClick} 
         />
 
-        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-          <SortableContext items={modules.map(m => m.id)} strategy={rectSortingStrategy}>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {modules.map(module => (
-                <SortableModuleCard 
-                  key={module.id} 
-                  module={module} 
-                  onClick={() => handleModuleClick(module.id)} 
-                  onBookmarkToggle={toggleBookmark} 
-                  canBookmark={canBookmark} 
-                  getBookmarkTooltip={getBookmarkTooltip} 
-                />
-              ))}
-            </div>
-          </SortableContext>
-        </DndContext>
+        <div className="bg-card border border-border rounded-lg p-6">
+          <h2 className="text-2xl font-bold text-foreground mb-6">Store</h2>
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <SortableContext items={modules.map(m => m.id)} strategy={rectSortingStrategy}>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {modules.map(module => (
+                  <SortableModuleCard 
+                    key={module.id} 
+                    module={module} 
+                    onClick={() => handleModuleClick(module.id)} 
+                    onBookmarkToggle={toggleBookmark} 
+                    canBookmark={canBookmark} 
+                    getBookmarkTooltip={getBookmarkTooltip} 
+                  />
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
+        </div>
       </div>
     </div>
   );

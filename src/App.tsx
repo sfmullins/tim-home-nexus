@@ -11,6 +11,7 @@ import SmartHome from "./components/modules/SmartHome";
 import Downloads from "./components/modules/Downloads";
 import GameStreaming from "./components/modules/GameStreaming";
 import VpnAccess from "./components/modules/VpnAccess";
+import GDPRConsentBanner from "./components/GDPRConsentBanner";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <GDPRConsentBanner />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
