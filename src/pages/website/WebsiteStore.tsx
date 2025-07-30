@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -184,8 +185,8 @@ const WebsiteStore = () => {
                 </div>
               </div>
 
-              <Button className="w-full" variant={product.popular ? "default" : "outline"}>
-                Configure {product.name}
+              <Button className="w-full" variant={product.popular ? "default" : "outline"} asChild>
+                <Link to="/website/configure">Configure {product.name}</Link>
               </Button>
             </CardContent>
           </Card>

@@ -45,7 +45,7 @@ const WebsiteHome = () => {
             </p>
             <div className="space-x-4">
               <Button asChild size="lg" variant="secondary">
-                <Link to="/website/store">{t('hero.cta')}</Link>
+                <Link to="/website/configure">{t('hero.cta')}</Link>
               </Button>
               <Button asChild size="lg" variant="outline">
                 <Link to="/website/about">Learn More</Link>
@@ -122,7 +122,7 @@ const WebsiteHome = () => {
                     </div>
                   </div>
                   <Button asChild className="w-full" variant="outline">
-                    <Link to="/website/store">Configure</Link>
+                    <Link to="/website/configure">Configure</Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -141,7 +141,7 @@ const WebsiteHome = () => {
             Pre-orders open January 1st, 2026. 50% deposit secures your TIM.
           </p>
           <Button asChild size="lg" variant="secondary">
-            <Link to="/website/store">Configure Your TIM</Link>
+            <Link to="/website/configure">Configure Your TIM</Link>
           </Button>
         </div>
       </section>

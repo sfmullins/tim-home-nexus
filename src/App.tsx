@@ -15,7 +15,9 @@ import GDPRConsentBanner from "./components/GDPRConsentBanner";
 import WebsiteLayout from "./components/website/WebsiteLayout";
 import WebsiteHome from "./pages/website/WebsiteHome";
 import WebsiteStore from "./pages/website/WebsiteStore";
+import WebsiteConfigure from "./pages/website/WebsiteConfigure";
 import { LocaleProvider } from "./contexts/LocaleContext";
+import { ConfigurationProvider } from "./contexts/ConfigurationContext";
 import "./i18n";
 
 const queryClient = new QueryClient();
@@ -23,7 +25,8 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <LocaleProvider>
-      <TooltipProvider>
+      <ConfigurationProvider>
+        <TooltipProvider>
         <Toaster />
         <Sonner />
         <GDPRConsentBanner />
@@ -49,6 +52,11 @@ const App = () => (
                 <WebsiteStore />
               </WebsiteLayout>
             } />
+            <Route path="/website/configure" element={
+              <WebsiteLayout>
+                <WebsiteConfigure />
+              </WebsiteLayout>
+            } />
             <Route path="/website/about" element={
               <WebsiteLayout>
                 <div className="max-w-4xl mx-auto px-4 py-16">
@@ -71,8 +79,9 @@ const App = () => (
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
-    </LocaleProvider>
-  </QueryClientProvider>
+    </ConfigurationProvider>
+  </LocaleProvider>
+</QueryClientProvider>
 );
 
 export default App;
