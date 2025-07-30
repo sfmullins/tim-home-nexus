@@ -60,11 +60,11 @@ const ModuleCard = ({
           <Button 
             variant="default" 
             size="sm" 
-            className="gap-2"
+            className="gap-2 opacity-100"
             onClick={(e) => {
               e.stopPropagation();
-              // Navigate to store page with pre-selected module
-              navigate(`/website/store?module=${module.id}`);
+              // Navigate to configure page for optional extras
+              navigate(`/website/configure?extras=${module.id}`);
             }}
           >
             <ShoppingCart className="w-4 h-4" />
