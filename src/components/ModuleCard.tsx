@@ -56,11 +56,11 @@ const ModuleCard = ({
     >
       {/* Purchase Overlay for unpurchased modules */}
       {!module.purchased && (
-        <div className="absolute inset-0 bg-muted/50 rounded-lg flex items-center justify-center z-20">
+        <div className="absolute inset-0 bg-muted/50 rounded-lg flex items-center justify-center z-20 opacity-100">
           <Button 
             variant="default" 
             size="sm" 
-            className="gap-2 opacity-100"
+            className="gap-2"
             onClick={(e) => {
               e.stopPropagation();
               // Navigate to configure page for optional extras
