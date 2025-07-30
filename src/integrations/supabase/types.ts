@@ -56,6 +56,54 @@ export type Database = {
         }
         Relationships: []
       }
+      orders: {
+        Row: {
+          billing_address: Json | null
+          configuration: Json
+          created_at: string
+          currency: string
+          email: string
+          id: string
+          shipping_address: Json | null
+          status: string
+          stripe_payment_intent_id: string | null
+          stripe_session_id: string | null
+          total_amount: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          billing_address?: Json | null
+          configuration: Json
+          created_at?: string
+          currency?: string
+          email: string
+          id?: string
+          shipping_address?: Json | null
+          status?: string
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string | null
+          total_amount: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          billing_address?: Json | null
+          configuration?: Json
+          created_at?: string
+          currency?: string
+          email?: string
+          id?: string
+          shipping_address?: Json | null
+          status?: string
+          stripe_payment_intent_id?: string | null
+          stripe_session_id?: string | null
+          total_amount?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string

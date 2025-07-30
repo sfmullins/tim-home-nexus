@@ -11,6 +11,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 import { ChevronRight, Check, Star, Zap } from 'lucide-react';
 import UpgradeSuggestion from './UpgradeSuggestion';
+import CheckoutButton from './CheckoutButton';
 
 const ProductConfigurator = () => {
   const { configuration, setConfiguration, updateConfiguration } = useConfiguration();
@@ -43,6 +44,75 @@ const ProductConfigurator = () => {
   };
 
   const formatPrice = (price: number) => `${currencySymbol}${price}`;
+
+  // Configuration Summary Component
+  const ConfigurationSummary = ({ configuration, formatPrice }: { configuration: ConfigurationState, formatPrice: (price: number) => string }) => (
+    <Card className="sticky top-4">
+      <CardHeader>
+        <CardTitle className="text-lg">Configuration Summary</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <div className="flex justify-between">
+            <span>Base {configuration.selectedProduct.name}</span>
+            <span>{formatPrice(configuration.selectedProduct.basePrice)}</span>
+          </div>
+          
+          {configuration.selectedRam && (
+            <div className="flex justify-between text-sm">
+              <span>RAM: {configuration.selectedRam.name}</span>
+              <span>+{formatPrice(configuration.selectedRam.price)}</span>
+            </div>
+          )}
+          
+          {configuration.selectedStorage && (
+            <div className="flex justify-between text-sm">
+              <span>Storage: {configuration.selectedStorage.name}</span>
+              <span>+{formatPrice(configuration.selectedStorage.price)}</span>
+            </div>
+          )}
+          
+          {configuration.selectedExternal && (
+            <div className="flex justify-between text-sm">
+              <span>External: {configuration.selectedExternal.name}</span>
+              <span>+{formatPrice(configuration.selectedExternal.price)}</span>
+            </div>
+          )}
+          
+          {configuration.selectedGpu && (
+            <div className="flex justify-between text-sm">
+              <span>GPU: {configuration.selectedGpu.name}</span>
+              <span>+{formatPrice(configuration.selectedGpu.price)}</span>
+            </div>
+          )}
+          
+          {configuration.includeJailbreak && configuration.selectedProduct.jailbreakPrice && (
+            <div className="flex justify-between text-sm">
+              <span>Jailbreak Access</span>
+              <span>+{formatPrice(configuration.selectedProduct.jailbreakPrice)}</span>
+            </div>
+          )}
+
+          {configuration.selectedSoftware?.map(softwareId => {
+            const addon = softwareAddons.find(a => a.id === softwareId);
+            return addon ? (
+              <div key={softwareId} className="flex justify-between text-sm">
+                <span>{addon.name}</span>
+                <span>+{formatPrice(addon.bundlePrice)}</span>
+              </div>
+            ) : null;
+          })}
+        </div>
+        
+        <Separator />
+        
+        <div className="flex justify-between font-bold text-lg">
+          <span>Total</span>
+          <span>{formatPrice(configuration.totalPrice)}</span>
+        </div>
+      </CardContent>
+    </Card>
+  );
 
   const renderStep1 = () => (
     <div className="space-y-8">
@@ -392,18 +462,142 @@ const ProductConfigurator = () => {
       {/* Step Content */}
       {step === 1 && renderStep1()}
       {step === 2 && renderStep2()}
+      {/* Step 3: Software Add-ons */}
       {step === 3 && (
-        <div className="text-center py-16">
-          <h2 className="text-2xl font-bold mb-4">Software Add-ons</h2>
-          <p className="text-muted-foreground mb-8">Coming soon in next phase...</p>
-          <Button onClick={() => setStep(4)}>Continue to Review</Button>
+        <div className="space-y-6">
+          <h2 className="text-2xl font-bold text-center">Software Add-ons</h2>
+          <p className="text-muted-foreground text-center">
+            Enhance your TIM with additional software packages
+          </p>
+
+          <div className="grid gap-4">
+            {softwareAddons
+              .filter(addon => addon.availableFor.includes(configuration?.selectedProduct.id || ''))
+              .map((addon) => (
+              <Card key={addon.id} className="p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <h3 className="font-semibold">{addon.name}</h3>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      {addon.description}
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm line-through text-muted-foreground">
+                        €{addon.fullPrice}
+                      </span>
+                      <span className="font-bold text-primary">
+                        €{addon.bundlePrice}
+                      </span>
+                      <Badge variant="secondary" className="text-xs">
+                        Save €{addon.fullPrice - addon.bundlePrice}
+                      </Badge>
+                    </div>
+                  </div>
+                  <Checkbox
+                    checked={configuration?.selectedSoftware.includes(addon.id) || false}
+                    onCheckedChange={(checked) => {
+                      if (configuration) {
+                        const currentSoftware = configuration.selectedSoftware || [];
+                        const newSoftware = checked
+                          ? [...currentSoftware, addon.id]
+                          : currentSoftware.filter(id => id !== addon.id);
+                        
+                        updateConfiguration({ selectedSoftware: newSoftware });
+                      }
+                    }}
+                  />
+                </div>
+              </Card>
+            ))}
+          </div>
+
+          {configuration && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+              <div></div>
+              <ConfigurationSummary 
+                configuration={configuration}
+                formatPrice={formatPrice}
+              />
+            </div>
+          )}
+
+          <div className="text-center pt-6">
+            <Button onClick={() => setStep(4)} size="lg">
+              Continue to Review
+            </Button>
+          </div>
         </div>
       )}
+
+      {/* Step 4: Review & Checkout */}
       {step === 4 && (
-        <div className="text-center py-16">
-          <h2 className="text-2xl font-bold mb-4">Review & Order</h2>
-          <p className="text-muted-foreground mb-8">Coming soon in next phase...</p>
-          <Button disabled>Pre-order Opens Jan 1st, 2026</Button>
+        <div className="space-y-6">
+          <h2 className="text-2xl font-bold text-center">Review & Checkout</h2>
+          <p className="text-muted-foreground text-center">
+            Final review of your TIM configuration
+          </p>
+
+          {configuration && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Configuration Details</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-2">
+                      <h4 className="font-semibold">Product</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {configuration.selectedProduct.name} - {configuration.selectedProduct.processor} processor, {configuration.selectedProduct.baseRam} RAM, {configuration.selectedProduct.baseStorage} storage
+                      </p>
+                    </div>
+
+                    {(configuration.selectedRam || configuration.selectedStorage || configuration.selectedExternal || configuration.selectedGpu) && (
+                      <div className="space-y-2">
+                        <h4 className="font-semibold">Hardware Upgrades</h4>
+                        <div className="text-sm text-muted-foreground space-y-1">
+                          {configuration.selectedRam && <p>• RAM: {configuration.selectedRam.name}</p>}
+                          {configuration.selectedStorage && <p>• Storage: {configuration.selectedStorage.name}</p>}
+                          {configuration.selectedExternal && <p>• External Storage: {configuration.selectedExternal.name}</p>}
+                          {configuration.selectedGpu && <p>• GPU: {configuration.selectedGpu.name}</p>}
+                        </div>
+                      </div>
+                    )}
+
+                    {configuration.includeJailbreak && (
+                      <div className="space-y-2">
+                        <h4 className="font-semibold">Additional Features</h4>
+                        <p className="text-sm text-muted-foreground">• Jailbreak Access included</p>
+                      </div>
+                    )}
+
+                    {configuration.selectedSoftware?.length > 0 && (
+                      <div className="space-y-2">
+                        <h4 className="font-semibold">Software Add-ons</h4>
+                        <div className="text-sm text-muted-foreground space-y-1">
+                          {configuration.selectedSoftware.map(softwareId => {
+                            const addon = softwareAddons.find(a => a.id === softwareId);
+                            return addon ? <p key={softwareId}>• {addon.name}</p> : null;
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+              
+              <div className="space-y-6">
+                <ConfigurationSummary 
+                  configuration={configuration}
+                  formatPrice={formatPrice}
+                />
+                
+                <div className="text-center">
+                  <CheckoutButton className="w-full" />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

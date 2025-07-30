@@ -16,6 +16,7 @@ import WebsiteLayout from "./components/website/WebsiteLayout";
 import WebsiteHome from "./pages/website/WebsiteHome";
 import WebsiteStore from "./pages/website/WebsiteStore";
 import WebsiteConfigure from "./pages/website/WebsiteConfigure";
+import WebsiteSuccess from "./pages/website/WebsiteSuccess";
 import { LocaleProvider } from "./contexts/LocaleContext";
 import { ConfigurationProvider } from "./contexts/ConfigurationContext";
 import "./i18n";
@@ -71,6 +72,11 @@ const App = () => (
                   <h1 className="text-4xl font-bold mb-8">Support</h1>
                   <p className="text-lg text-muted-foreground">Coming soon...</p>
                 </div>
+              </WebsiteLayout>
+            } />
+            <Route path="/website/success" element={
+              <WebsiteLayout>
+                <WebsiteSuccess />
               </WebsiteLayout>
             } />
             
