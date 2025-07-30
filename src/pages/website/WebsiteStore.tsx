@@ -1,11 +1,13 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
 const WebsiteStore = () => {
+  const [searchParams] = useSearchParams();
+  const moduleParam = searchParams.get('module');
   const { t } = useTranslation();
   
   const seoConfig = {
@@ -82,6 +84,13 @@ const WebsiteStore = () => {
     }
   ];
 
+  useEffect(() => {
+    if (moduleParam) {
+      // Scroll to top and show a brief highlight to indicate the user came from a module
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [moduleParam]);
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="text-center space-y-4 mb-12">
@@ -89,6 +98,13 @@ const WebsiteStore = () => {
         <p className="text-xl text-muted-foreground">
           Configure your perfect personal server
         </p>
+        {moduleParam && (
+          <div className="mt-4 p-3 bg-accent/10 border border-accent/20 rounded-lg max-w-md mx-auto">
+            <p className="text-sm text-accent">
+              📦 Looking for <span className="font-semibold">{moduleParam}</span>? All configurations support additional modules!
+            </p>
+          </div>
+        )}
         <div className="flex justify-center space-x-2 text-sm text-muted-foreground">
           <span>* 50% discount when purchased with hardware</span>
           <span>** One-time jailbreak fee for TIM Pro</span>

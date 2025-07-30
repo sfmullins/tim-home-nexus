@@ -5,6 +5,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { Star, Files, Home, Download, Cloud, Gamepad2, Shield, ShoppingCart, Mail, Play, ShieldAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ModuleData } from "@/hooks/useBookmarks";
+import { useNavigate } from "react-router-dom";
 
 interface ModuleCardProps {
   module: ModuleData;
@@ -23,6 +24,7 @@ const ModuleCard = ({
   getBookmarkTooltip,
   isDragging 
 }: ModuleCardProps) => {
+  const navigate = useNavigate();
   const statusColors = {
     online: "bg-success text-success-foreground",
     offline: "bg-destructive text-destructive-foreground", 
@@ -62,7 +64,7 @@ const ModuleCard = ({
             onClick={(e) => {
               e.stopPropagation();
               // Navigate to store page with pre-selected module
-              window.location.href = `/store?module=${module.id}`;
+              navigate(`/website/store?module=${module.id}`);
             }}
           >
             <ShoppingCart className="w-4 h-4" />
