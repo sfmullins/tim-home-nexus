@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import CurrencyDisplay from '@/components/website/CurrencyDisplay';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Shield, Leaf, TrendingDown, Cpu } from 'lucide-react';
@@ -19,23 +20,23 @@ const WebsiteHome = () => {
   const features = [
     {
       icon: TrendingDown,
-      title: 'Cost Saving',
-      description: 'No monthly subscriptions. Pay once, own forever. Save hundreds compared to cloud services.'
+      title: t('features.costSaving'),
+      description: t('features.costSavingDesc')
     },
     {
       icon: Shield,
-      title: 'Privacy First',
-      description: 'Your data stays local. No cloud, no tracking, no third-party access. Complete digital sovereignty.'
+      title: t('features.privacyFirst'),
+      description: t('features.privacyFirstDesc')
     },
     {
       icon: Leaf,
-      title: 'Environmental',
-      description: 'Low power consumption (~6W average) vs. energy-hungry data centers. Better for the planet.'
+      title: t('features.environmental'),
+      description: t('features.environmentalDesc')
     },
     {
       icon: Cpu,
-      title: 'Tech Excellence',
-      description: 'From N97 to Ryzen 5. Expandable RAM, storage, and features. Built for enthusiasts.'
+      title: t('features.techExcellence'),
+      description: t('features.techExcellenceDesc')
     }
   ];
 
@@ -56,7 +57,7 @@ const WebsiteHome = () => {
                 <Link to="/website/configure">{t('hero.cta')}</Link>
               </Button>
               <Button asChild size="lg" variant="outline">
-                <Link to="/website/about">Learn More</Link>
+                <Link to="/website/about">{t('buttons.learnMore')}</Link>
               </Button>
             </div>
           </div>
@@ -68,10 +69,10 @@ const WebsiteHome = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-4 mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-            Why Choose TIM?
+            {t('sections.whyChooseTim')}
           </h2>
           <p className="text-xl text-muted-foreground">
-            Four pillars of digital independence
+            {t('sections.fourPillars')}
           </p>
         </div>
         
@@ -95,25 +96,27 @@ const WebsiteHome = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center space-y-4 mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-              Choose Your TIM
+              {t('sections.chooseYourTim')}
             </h2>
             <p className="text-xl text-muted-foreground">
-              From starter to enthusiast, there's a TIM for everyone
+              {t('sections.everyoneHasTim')}
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { name: 'Tiny TIM', price: '€299', processor: 'N97', ram: '8GB', storage: '256GB' },
-              { name: 'Just TIM', price: '€449', processor: 'N100', ram: '16GB', storage: '500GB' },
-              { name: 'TIM Pro', price: '€699', processor: 'N200', ram: '24GB', storage: '1TB' },
-              { name: 'TIM Max', price: '€1299', processor: 'Ryzen 5', ram: '64GB', storage: '2TB' }
+              { name: 'Tiny TIM', price: 299, processor: 'N97', ram: '8GB', storage: '256GB' },
+              { name: 'Just TIM', price: 449, processor: 'N100', ram: '16GB', storage: '500GB' },
+              { name: 'TIM Pro', price: 699, processor: 'N200', ram: '24GB', storage: '1TB' },
+              { name: 'TIM Max', price: 1299, processor: 'Ryzen 5', ram: '64GB', storage: '2TB' }
             ].map((product, index) => (
               <Card key={index} className="border border-border bg-card hover:shadow-accent transition-shadow">
                 <CardContent className="p-6 space-y-4">
                   <div className="text-center">
                     <h3 className="text-2xl font-bold text-foreground">{product.name}</h3>
-                    <p className="text-3xl font-bold text-primary">{product.price}</p>
+                    <p className="text-3xl font-bold text-primary">
+                      <CurrencyDisplay amount={product.price} />
+                    </p>
                   </div>
                   <div className="space-y-2 text-sm text-muted-foreground">
                     <div className="flex justify-between">
@@ -130,7 +133,7 @@ const WebsiteHome = () => {
                     </div>
                   </div>
                   <Button asChild className="w-full" variant="outline">
-                    <Link to="/website/configure">Configure</Link>
+                    <Link to="/website/configure">{t('buttons.configure')}</Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -143,13 +146,13 @@ const WebsiteHome = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="bg-gradient-accent rounded-lg p-12 space-y-6">
           <h2 className="text-3xl md:text-4xl font-bold text-accent-foreground">
-            Ready to Own Your Data?
+            {t('sections.readyToOwn')}
           </h2>
           <p className="text-xl text-accent-foreground/90 max-w-2xl mx-auto">
-            Pre-orders open January 1st, 2026. 50% deposit secures your TIM.
+            {t('sections.preOrderInfo')}
           </p>
           <Button asChild size="lg" variant="secondary">
-            <Link to="/website/configure">Configure Your TIM</Link>
+            <Link to="/website/configure">{t('buttons.configureYourTim')}</Link>
           </Button>
         </div>
       </section>

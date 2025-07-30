@@ -17,6 +17,7 @@ import WebsiteHome from "./pages/website/WebsiteHome";
 import WebsiteStore from "./pages/website/WebsiteStore";
 import WebsiteConfigure from "./pages/website/WebsiteConfigure";
 import WebsiteSuccess from "./pages/website/WebsiteSuccess";
+import WebsiteSupport from "./pages/website/WebsiteSupport";
 import WebsiteAbout from "./pages/website/WebsiteAbout";
 import WebsiteFAQ from "./pages/website/WebsiteFAQ";
 import WebsiteBlog from "./pages/website/WebsiteBlog";
@@ -69,11 +70,7 @@ const App = () => (
                 <WebsiteAbout />
               </WebsiteLayout>
             } />
-            <Route path="/website/support" element={
-              <WebsiteLayout>
-                <WebsiteFAQ />
-              </WebsiteLayout>
-            } />
+            <Route path="/website/support" element={<WebsiteSupport />} />
             <Route path="/website/faq" element={
               <WebsiteLayout>
                 <WebsiteFAQ />
@@ -97,11 +94,7 @@ const App = () => (
                 <ProductSpecs />
               </WebsiteLayout>
             } />
-            <Route path="/website/success" element={
-              <WebsiteLayout>
-                <WebsiteSuccess />
-              </WebsiteLayout>
-            } />
+            <Route path="/website/success" element={<WebsiteSuccess />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

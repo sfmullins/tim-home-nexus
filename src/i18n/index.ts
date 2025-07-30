@@ -23,6 +23,29 @@ const resources = {
         timPro: 'TIM Pro',
         timMax: 'TIM Max'
       },
+      features: {
+        costSaving: 'Cost Saving',
+        costSavingDesc: 'No monthly subscriptions. Pay once, own forever. Save hundreds compared to cloud services.',
+        privacyFirst: 'Privacy First',
+        privacyFirstDesc: 'Your data stays local. No cloud, no tracking, no third-party access. Complete digital sovereignty.',
+        environmental: 'Environmental',
+        environmentalDesc: 'Low power consumption (~6W average) vs. energy-hungry data centers. Better for the planet.',
+        techExcellence: 'Tech Excellence',
+        techExcellenceDesc: 'From N97 to Ryzen 5. Expandable RAM, storage, and features. Built for enthusiasts.'
+      },
+      sections: {
+        whyChooseTim: 'Why Choose TIM?',
+        fourPillars: 'Four pillars of digital independence',
+        chooseYourTim: 'Choose Your TIM',
+        everyoneHasTim: 'From starter to enthusiast, there is a TIM for everyone',
+        readyToOwn: 'Ready to Own Your Data?',
+        preOrderInfo: 'Pre-orders open January 1st, 2026. 50% deposit secures your TIM.'
+      },
+      buttons: {
+        learnMore: 'Learn More',
+        configure: 'Configure',
+        configureYourTim: 'Configure Your TIM'
+      },
       currency: 'EUR',
       currencySymbol: '€'
     }
@@ -47,6 +70,29 @@ const resources = {
         timPro: 'TIM Pro', 
         timMax: 'TIM Max'
       },
+      features: {
+        costSaving: 'Cost Saving',
+        costSavingDesc: 'No monthly subscriptions. Pay once, own forever. Save hundreds compared to cloud services.',
+        privacyFirst: 'Privacy First',
+        privacyFirstDesc: 'Your data stays local. No cloud, no tracking, no third-party access. Complete digital sovereignty.',
+        environmental: 'Environmental',
+        environmentalDesc: 'Low power consumption (~6W average) vs. energy-hungry data centres. Better for the planet.',
+        techExcellence: 'Tech Excellence',
+        techExcellenceDesc: 'From N97 to Ryzen 5. Expandable RAM, storage, and features. Built for enthusiasts.'
+      },
+      sections: {
+        whyChooseTim: 'Why Choose TIM?',
+        fourPillars: 'Four pillars of digital independence',
+        chooseYourTim: 'Choose Your TIM',
+        everyoneHasTim: 'From starter to enthusiast, there is a TIM for everyone',
+        readyToOwn: 'Ready to Own Your Data?',
+        preOrderInfo: 'Pre-orders open 1st January 2026. 50% deposit secures your TIM.'
+      },
+      buttons: {
+        learnMore: 'Learn More',
+        configure: 'Configure',
+        configureYourTim: 'Configure Your TIM'
+      },
       currency: 'GBP',
       currencySymbol: '£'
     }
@@ -70,6 +116,29 @@ const resources = {
         justTim: 'Just TIM',
         timPro: 'TIM Pro',
         timMax: 'TIM Max'
+      },
+      features: {
+        costSaving: 'Cost Saving',
+        costSavingDesc: 'No monthly subscriptions. Pay once, own forever. Save hundreds compared to cloud services.',
+        privacyFirst: 'Privacy First',
+        privacyFirstDesc: 'Your data stays local. No cloud, no tracking, no third-party access. Complete digital sovereignty.',
+        environmental: 'Environmental',
+        environmentalDesc: 'Low power consumption (~6W average) vs. energy-hungry data centers. Better for the planet.',
+        techExcellence: 'Tech Excellence',
+        techExcellenceDesc: 'From N97 to Ryzen 5. Expandable RAM, storage, and features. Built for enthusiasts.'
+      },
+      sections: {
+        whyChooseTim: 'Why Choose TIM?',
+        fourPillars: 'Four pillars of digital independence',
+        chooseYourTim: 'Choose Your TIM',
+        everyoneHasTim: 'From starter to enthusiast, there is a TIM for everyone',
+        readyToOwn: 'Ready to Own Your Data?',
+        preOrderInfo: 'Pre-orders open January 1st, 2026. 50% deposit secures your TIM.'
+      },
+      buttons: {
+        learnMore: 'Learn More',
+        configure: 'Configure',
+        configureYourTim: 'Configure Your TIM'
       },
       currency: 'USD', 
       currencySymbol: '$'

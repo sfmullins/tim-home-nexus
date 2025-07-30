@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useLocale } from '@/contexts/LocaleContext';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import LocaleSelector from '@/components/website/LocaleSelector';
 import SEOHead from '@/components/website/SEOHead';
 import timLogo from '@/assets/tim-logo.png';
 
@@ -68,18 +68,7 @@ const WebsiteLayout: React.FC<WebsiteLayoutProps> = ({ children, seo }) => {
             </div>
 
             <div className="flex items-center space-x-4">
-              {/* Locale Selector */}
-              <Select value={locale} onValueChange={setLocale}>
-                <SelectTrigger className="w-24">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="en-IE">🇮🇪 IE</SelectItem>
-                  <SelectItem value="en-UK">🇬🇧 UK</SelectItem>
-                  <SelectItem value="en-US">🇺🇸 US</SelectItem>
-                </SelectContent>
-              </Select>
-
+              <LocaleSelector />
               <Button asChild variant="outline">
                 <Link to="/">{t('nav.app')}</Link>
               </Button>
