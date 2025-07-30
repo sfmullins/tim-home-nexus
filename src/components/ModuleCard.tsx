@@ -49,18 +49,17 @@ const ModuleCard = ({
     <Card 
       className={cn(
         "p-6 bg-gradient-surface border-border hover:border-primary/50 transition-all duration-300 cursor-pointer group relative",
-        isDragging && "opacity-50 rotate-2 scale-105",
-        !module.purchased && "opacity-60"
+        isDragging && "opacity-50 rotate-2 scale-105"
       )}
       onClick={module.purchased ? onClick : undefined}
     >
       {/* Purchase Overlay for unpurchased modules */}
       {!module.purchased && (
-        <div className="absolute inset-0 bg-muted/50 rounded-lg flex items-center justify-center z-20 opacity-100">
+        <div className="absolute inset-0 bg-muted/80 rounded-lg flex items-center justify-center z-20">
           <Button 
             variant="default" 
             size="sm" 
-            className="gap-2"
+            className="gap-2 opacity-100 relative z-30"
             onClick={(e) => {
               e.stopPropagation();
               // Navigate to configure page for optional extras
@@ -105,12 +104,15 @@ const ModuleCard = ({
       )}
 
       {/* Module Icon */}
-      <div className="p-3 rounded-lg bg-accent/10 mb-4 w-fit group-hover:bg-accent/20 transition-colors duration-300">
+      <div className={cn(
+        "p-3 rounded-lg bg-accent/10 mb-4 w-fit group-hover:bg-accent/20 transition-colors duration-300",
+        !module.purchased && "opacity-60"
+      )}>
         <IconComponent className="w-8 h-8 text-accent" />
       </div>
       
       {/* Module Info */}
-      <div className="space-y-2">
+      <div className={cn("space-y-2", !module.purchased && "opacity-60")}>
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold text-foreground">{module.title}</h3>
           <Badge className={cn("text-xs", statusColors[module.status])}>
