@@ -9,14 +9,6 @@ export const products: ProductConfig[] = [
     baseRam: '8GB',
     baseStorage: '256GB M.2',
     features: ['File Server', 'Smart Home', 'VPN Access'],
-    ramUpgrades: [
-      { id: 'ram-16gb', name: '16GB', price: 50, description: 'Upgrade to 16GB RAM' },
-      { id: 'ram-32gb', name: '32GB', price: 150, description: 'Upgrade to 32GB RAM' }
-    ],
-    storageUpgrades: [
-      { id: 'storage-500gb', name: '500GB M.2', price: 50, description: 'Upgrade to 500GB storage' },
-      { id: 'storage-1tb', name: '1TB M.2', price: 150, description: 'Upgrade to 1TB storage' }
-    ],
     allowsJailbreak: false,
     popular: false
   },

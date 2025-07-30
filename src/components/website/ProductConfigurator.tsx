@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
 import { ChevronRight, Check, Star, Zap } from 'lucide-react';
+import UpgradeSuggestion from './UpgradeSuggestion';
 
 const ProductConfigurator = () => {
   const { configuration, setConfiguration, updateConfiguration } = useConfiguration();
@@ -27,11 +28,18 @@ const ProductConfigurator = () => {
     const newConfig: ConfigurationState = {
       selectedProduct: product,
       includeJailbreak: product.includesJailbreak || false,
-      selectedSoftware: [],
+      selectedSoftware: configuration?.selectedSoftware || [],
       totalPrice: product.basePrice
     };
     setConfiguration(newConfig);
     setStep(2);
+  };
+
+  const switchToJustTim = () => {
+    const justTim = products.find(p => p.id === 'just-tim');
+    if (justTim) {
+      selectProduct(justTim);
+    }
   };
 
   const formatPrice = (price: number) => `${currencySymbol}${price}`;
@@ -118,6 +126,14 @@ const ProductConfigurator = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="space-y-6">
+            {/* Upgrade Suggestion for Tiny TIM */}
+            {configuration.selectedProduct.id === 'tiny-tim' && (
+              <UpgradeSuggestion 
+                currentProduct={configuration.selectedProduct.id}
+                onUpgrade={switchToJustTim}
+              />
+            )}
+
             {/* RAM Configuration */}
             {configuration.selectedProduct.ramUpgrades && (
               <Card>
