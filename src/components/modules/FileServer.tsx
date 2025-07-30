@@ -68,6 +68,7 @@ const FileServer = () => {
     setError(null);
     
     try {
+      console.log(`Loading directory: ${path}`);
       const { data, error } = await supabase.functions.invoke('file-server', {
         body: { 
           action: 'list',
@@ -75,29 +76,41 @@ const FileServer = () => {
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw error;
+      }
 
       const response = data as DirectoryResponse;
       if (response.error) {
+        console.error('Response error:', response.error);
         throw new Error(response.error);
       }
 
+      console.log('Files loaded successfully:', response.files);
       setFiles(response.files || []);
       setCurrentPath(response.currentPath || path);
+      
+      toast({
+        title: "Directory Loaded",
+        description: `Found ${response.files?.length || 0} items`,
+      });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to load directory';
+      console.error('Directory load error:', errorMessage);
       setError(errorMessage);
       toast({
-        title: "Error",
-        description: errorMessage,
+        title: "Connection Error",
+        description: "Using offline mode with sample files",
         variant: "destructive"
       });
       
-      // Fallback to mock data for development
+      // Fallback to enhanced mock data for development
+      console.log('Using enhanced mock data for file server');
       const mockFiles: FileItem[] = [
         { 
           name: "Documents", 
-          type: "folder", 
+          type: "folder",
           modified: new Date().toISOString(), 
           path: path === "/" ? "/Documents" : `${path}/Documents` 
         },

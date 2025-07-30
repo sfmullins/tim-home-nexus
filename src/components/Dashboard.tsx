@@ -41,7 +41,7 @@ const Dashboard = () => {
     title: "Downloads",
     description: "Manage torrents and downloads remotely",
     icon: "download",
-    status: "connecting",
+    status: "offline",
     isBookmarked: false,
     purchased: false
   }, {
@@ -49,6 +49,30 @@ const Dashboard = () => {
     title: "Game Streaming",
     description: "Stream games from TIM to your device",
     icon: "gamepad",
+    status: "offline",
+    isBookmarked: false,
+    purchased: false
+  }, {
+    id: "email-storage",
+    title: "Email Storage",
+    description: "Host your email inbox content locally on TIM",
+    icon: "mail",
+    status: "offline",
+    isBookmarked: false,
+    purchased: false
+  }, {
+    id: "media-library",
+    title: "Media Library",
+    description: "Local media server for family-friendly content control",
+    icon: "play",
+    status: "offline",
+    isBookmarked: false,
+    purchased: false
+  }, {
+    id: "safety-net",
+    title: "Safety Net",
+    description: "Filter content and manage internet access by device and time",
+    icon: "safety",
     status: "offline",
     isBookmarked: false,
     purchased: false
@@ -113,6 +137,15 @@ const Dashboard = () => {
         break;
       case "game-streaming":
         navigate("/game-streaming");
+        break;
+      case "email-storage":
+        navigate("/email-storage");
+        break;
+      case "media-library":
+        navigate("/media-library");
+        break;
+      case "safety-net":
+        navigate("/safety-net");
         break;
       case "vpn-access":
         navigate("/vpn-access");

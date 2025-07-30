@@ -47,6 +47,9 @@ const App = () => (
             <Route path="/smart-home" element={<SmartHome />} />
             <Route path="/downloads" element={<Downloads />} />
             <Route path="/game-streaming" element={<GameStreaming />} />
+            <Route path="/email-storage" element={<div className="p-8 text-center"><h1>Email Storage - Coming Soon</h1></div>} />
+            <Route path="/media-library" element={<div className="p-8 text-center"><h1>Media Library - Coming Soon</h1></div>} />
+            <Route path="/safety-net" element={<div className="p-8 text-center"><h1>Safety Net - Coming Soon</h1></div>} />
             <Route path="/vpn-access" element={<VpnAccess />} />
             
             {/* Website Routes */}

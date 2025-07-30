@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Star, Files, Home, Download, Cloud, Gamepad2, Shield, ShoppingCart } from "lucide-react";
+import { Star, Files, Home, Download, Cloud, Gamepad2, Shield, ShoppingCart, Mail, Play, ShieldAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ModuleData } from "@/hooks/useBookmarks";
 
@@ -35,7 +35,10 @@ const ModuleCard = ({
     "download": Download,
     "cloud": Cloud,
     "gamepad": Gamepad2,
-    "shield": Shield
+    "shield": Shield,
+    "mail": Mail,
+    "play": Play,
+    "safety": ShieldAlert
   };
 
   const IconComponent = iconMap[module.icon as keyof typeof iconMap] || Files;
@@ -52,7 +55,16 @@ const ModuleCard = ({
       {/* Purchase Overlay for unpurchased modules */}
       {!module.purchased && (
         <div className="absolute inset-0 bg-muted/50 rounded-lg flex items-center justify-center z-20">
-          <Button variant="default" size="sm" className="gap-2">
+          <Button 
+            variant="default" 
+            size="sm" 
+            className="gap-2"
+            onClick={(e) => {
+              e.stopPropagation();
+              // Navigate to store page with pre-selected module
+              window.location.href = `/store?module=${module.id}`;
+            }}
+          >
             <ShoppingCart className="w-4 h-4" />
             Purchase
           </Button>
