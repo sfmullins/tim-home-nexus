@@ -9,14 +9,19 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
-import { ChevronRight, Check, Star, Zap } from 'lucide-react';
+import { ChevronRight, Check, Star, Zap, Copy } from 'lucide-react';
 import UpgradeSuggestion from './UpgradeSuggestion';
 import CheckoutButton from './CheckoutButton';
+import MockCheckoutButton from './MockCheckoutButton';
+import AddressForm from './AddressForm';
 
 const ProductConfigurator = () => {
   const { configuration, setConfiguration, updateConfiguration } = useConfiguration();
   const { currencySymbol } = useLocale();
   const [step, setStep] = useState(1);
+  const [shippingAddress, setShippingAddress] = useState({});
+  const [billingAddress, setBillingAddress] = useState({});
+  const [sameAsShipping, setSameAsShipping] = useState(true);
 
   const steps = [
     { id: 1, name: 'Choose Model', icon: Star },
@@ -538,8 +543,43 @@ const ProductConfigurator = () => {
           </p>
 
           {configuration && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2 space-y-6">
+                {/* Shipping Address */}
+                <AddressForm
+                  title="Shipping Address"
+                  address={shippingAddress}
+                  onChange={setShippingAddress}
+                />
+
+                {/* Billing Address */}
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="sameAsShipping"
+                      checked={sameAsShipping}
+                      onCheckedChange={(checked) => {
+                        setSameAsShipping(!!checked);
+                        if (checked) {
+                          setBillingAddress(shippingAddress);
+                        }
+                      }}
+                    />
+                    <label htmlFor="sameAsShipping" className="text-sm font-medium">
+                      Billing address same as shipping
+                    </label>
+                  </div>
+
+                  {!sameAsShipping && (
+                    <AddressForm
+                      title="Billing Address"
+                      address={billingAddress}
+                      onChange={setBillingAddress}
+                    />
+                  )}
+                </div>
+
+                {/* Configuration Details Card */}
                 <Card>
                   <CardHeader>
                     <CardTitle>Configuration Details</CardTitle>
@@ -592,8 +632,26 @@ const ProductConfigurator = () => {
                   formatPrice={formatPrice}
                 />
                 
-                <div className="text-center">
+                <div className="space-y-3">
+                  <MockCheckoutButton 
+                    className="w-full" 
+                    shippingAddress={sameAsShipping ? shippingAddress : shippingAddress}
+                    billingAddress={sameAsShipping ? shippingAddress : billingAddress}
+                  />
+                  
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t" />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-background px-2 text-muted-foreground">or</span>
+                    </div>
+                  </div>
+                  
                   <CheckoutButton className="w-full" />
+                  <p className="text-xs text-muted-foreground text-center">
+                    Real checkout requires Stripe configuration
+                  </p>
                 </div>
               </div>
             </div>

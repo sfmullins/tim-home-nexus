@@ -15,6 +15,8 @@ const WebsiteSuccess = () => {
 
   const orderId = searchParams.get('order_id');
   const sessionId = searchParams.get('session_id');
+  const mockOrderId = searchParams.get('mock_order_id');
+  const mockTotal = searchParams.get('total');
 
   useEffect(() => {
     const verifyPayment = async () => {
@@ -37,6 +39,17 @@ const WebsiteSuccess = () => {
 
           if (error) throw error;
           setOrder(data);
+        } else if (mockOrderId && mockTotal) {
+          // Handle mock order
+          const mockOrder = {
+            id: mockOrderId,
+            status: 'paid',
+            total_amount: parseFloat(mockTotal) * 100,
+            currency: 'EUR',
+            configuration: JSON.parse(localStorage.getItem('tim-configuration') || '{}'),
+            created_at: new Date().toISOString()
+          };
+          setOrder(mockOrder);
         }
       } catch (error) {
         console.error('Error verifying payment:', error);
@@ -50,12 +63,12 @@ const WebsiteSuccess = () => {
       }
     };
 
-    if (orderId || sessionId) {
+    if (orderId || sessionId || mockOrderId) {
       verifyPayment();
     } else {
       setLoading(false);
     }
-  }, [orderId, sessionId, toast]);
+  }, [orderId, sessionId, mockOrderId, mockTotal, toast]);
 
   if (loading) {
     return (
