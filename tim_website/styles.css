@@ -1,0 +1,75 @@
+
+:root {
+    --tim-primary: #0066cc;       /* TIM Brand Blue */
+    --tim-secondary: #004a99;     /* Darker blue for accents */
+    --tim-accent: #00b388;        /* Accent green */
+    --tim-bg: #f9fbfd;
+    --tim-font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+    background-color: var(--tim-bg);
+    font-family: var(--tim-font);
+    color: #222;
+}
+.navbar {
+    background-color: var(--tim-primary);
+}
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: white !important;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+}
+.navbar-brand img {
+    height: 30px;
+    border-radius: 5px;
+    margin-right: 0.5rem;
+}
+.nav-link {
+    color: #e0e7ff !important;
+    font-weight: 500;
+}
+.nav-link:hover, .nav-link:focus {
+    color: var(--tim-accent) !important;
+}
+.btn-tim-primary {
+    background-color: var(--tim-primary);
+    border: none;
+}
+.btn-tim-primary:hover {
+    background-color: var(--tim-secondary);
+}
+footer {
+    background-color: var(--tim-secondary);
+    color: white;
+    padding: 1rem 0;
+    text-align: center;
+    font-size: 0.9rem;
+}
+.hero-section {
+    padding: 5rem 1rem 4rem;
+    text-align: center;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 12px rgba(0,0,0,0.08);
+    margin-bottom: 3rem;
+}
+.store-table thead {
+    background-color: var(--tim-primary);
+    color: white;
+    font-weight: 600;
+}
+.accordion-button {
+    background-color: var(--tim-bg);
+    font-weight: 600;
+    color: var(--tim-primary);
+}
+
+/* Responsive spacing tweaks */
+@media (max-width: 576px) {
+    .hero-section {
+        padding: 3rem 1rem 2rem;
+    }
+}
