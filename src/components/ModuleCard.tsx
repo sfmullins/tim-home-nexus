@@ -62,8 +62,8 @@ const ModuleCard = ({
             className="gap-2 opacity-100 relative z-30"
             onClick={(e) => {
               e.stopPropagation();
-              // Navigate to configure page for optional extras
-              navigate(`/website/configure?extras=${module.id}`);
+              // Navigate to add software page for existing users
+              navigate(`/dashboard/add-software?module=${module.id}`);
             }}
           >
             <ShoppingCart className="w-4 h-4" />

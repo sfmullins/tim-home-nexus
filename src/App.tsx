@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
+import SoftwareAddonPage from "./pages/SoftwareAddonPage";
 import FileServer from "./components/modules/FileServer";
 import SmartHome from "./components/modules/SmartHome";
 import Downloads from "./components/modules/Downloads";
@@ -51,6 +52,7 @@ const App = () => (
             <Route path="/media-library" element={<div className="p-8 text-center"><h1>Media Library - Coming Soon</h1></div>} />
             <Route path="/safety-net" element={<div className="p-8 text-center"><h1>Safety Net - Coming Soon</h1></div>} />
             <Route path="/vpn-access" element={<VpnAccess />} />
+            <Route path="/dashboard/add-software" element={<SoftwareAddonPage />} />
             
             {/* Website Routes */}
             <Route path="/website" element={
