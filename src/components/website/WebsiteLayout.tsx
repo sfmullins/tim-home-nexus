@@ -4,9 +4,20 @@ import { useTranslation } from 'react-i18next';
 import { useLocale } from '@/contexts/LocaleContext';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import SEOHead from '@/components/website/SEOHead';
 import timLogo from '@/assets/tim-logo.png';
 
-const WebsiteLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+interface WebsiteLayoutProps {
+  children: React.ReactNode;
+  seo?: {
+    title?: string;
+    description?: string;
+    keywords?: string;
+    type?: 'website' | 'article' | 'product';
+  };
+}
+
+const WebsiteLayout: React.FC<WebsiteLayoutProps> = ({ children, seo }) => {
   const { t } = useTranslation();
   const { locale, setLocale } = useLocale();
   const location = useLocation();
@@ -14,6 +25,7 @@ const WebsiteLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const navigation = [
     { name: t('nav.home'), href: '/website' },
     { name: t('nav.store'), href: '/website/store' },
+    { name: 'Blog', href: '/website/blog' },
     { name: t('nav.about'), href: '/website/about' },
     { name: t('nav.support'), href: '/website/support' },
   ];
@@ -27,6 +39,7 @@ const WebsiteLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead {...seo} />
       {/* Navigation */}
       <nav className="border-b border-border bg-card/50 backdrop-blur supports-[backdrop-filter]:bg-card/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -105,11 +118,12 @@ const WebsiteLayout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             </div>
 
             <div>
-              <h3 className="font-semibold text-foreground mb-4">Support</h3>
+              <h3 className="font-semibold text-foreground mb-4">Resources</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><Link to="/website/support" className="hover:text-foreground">Documentation</Link></li>
-                <li><Link to="/website/support" className="hover:text-foreground">Contact</Link></li>
+                <li><Link to="/website/blog" className="hover:text-foreground">Blog</Link></li>
                 <li><Link to="/website/support" className="hover:text-foreground">FAQ</Link></li>
+                <li><Link to="/website/support" className="hover:text-foreground">Support</Link></li>
+                <li><Link to="/website/support" className="hover:text-foreground">Contact</Link></li>
               </ul>
             </div>
 

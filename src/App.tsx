@@ -17,17 +17,23 @@ import WebsiteHome from "./pages/website/WebsiteHome";
 import WebsiteStore from "./pages/website/WebsiteStore";
 import WebsiteConfigure from "./pages/website/WebsiteConfigure";
 import WebsiteSuccess from "./pages/website/WebsiteSuccess";
+import WebsiteAbout from "./pages/website/WebsiteAbout";
+import WebsiteFAQ from "./pages/website/WebsiteFAQ";
+import WebsiteBlog from "./pages/website/WebsiteBlog";
+import ProductSpecs from "./components/website/ProductSpecs";
 import { LocaleProvider } from "./contexts/LocaleContext";
 import { ConfigurationProvider } from "./contexts/ConfigurationContext";
+import { HelmetProvider } from 'react-helmet-async';
 import "./i18n";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <LocaleProvider>
-      <ConfigurationProvider>
-        <TooltipProvider>
+    <HelmetProvider>
+      <LocaleProvider>
+        <ConfigurationProvider>
+          <TooltipProvider>
         <Toaster />
         <Sonner />
         <GDPRConsentBanner />
@@ -60,18 +66,35 @@ const App = () => (
             } />
             <Route path="/website/about" element={
               <WebsiteLayout>
-                <div className="max-w-4xl mx-auto px-4 py-16">
-                  <h1 className="text-4xl font-bold mb-8">About TIM</h1>
-                  <p className="text-lg text-muted-foreground">Coming soon...</p>
-                </div>
+                <WebsiteAbout />
               </WebsiteLayout>
             } />
             <Route path="/website/support" element={
               <WebsiteLayout>
+                <WebsiteFAQ />
+              </WebsiteLayout>
+            } />
+            <Route path="/website/faq" element={
+              <WebsiteLayout>
+                <WebsiteFAQ />
+              </WebsiteLayout>
+            } />
+            <Route path="/website/blog" element={
+              <WebsiteLayout>
+                <WebsiteBlog />
+              </WebsiteLayout>
+            } />
+            <Route path="/website/blog/:slug" element={
+              <WebsiteLayout>
                 <div className="max-w-4xl mx-auto px-4 py-16">
-                  <h1 className="text-4xl font-bold mb-8">Support</h1>
-                  <p className="text-lg text-muted-foreground">Coming soon...</p>
+                  <h1 className="text-4xl font-bold mb-8">Blog Post</h1>
+                  <p className="text-lg text-muted-foreground">Blog post content coming soon...</p>
                 </div>
+              </WebsiteLayout>
+            } />
+            <Route path="/website/specs" element={
+              <WebsiteLayout>
+                <ProductSpecs />
               </WebsiteLayout>
             } />
             <Route path="/website/success" element={
@@ -84,9 +107,10 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
-      </TooltipProvider>
-    </ConfigurationProvider>
-  </LocaleProvider>
+        </TooltipProvider>
+      </ConfigurationProvider>
+    </LocaleProvider>
+  </HelmetProvider>
 </QueryClientProvider>
 );
 

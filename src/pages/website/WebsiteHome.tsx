@@ -7,6 +7,14 @@ import { Shield, Leaf, TrendingDown, Cpu } from 'lucide-react';
 
 const WebsiteHome = () => {
   const { t } = useTranslation();
+  
+  // This will be passed to WebsiteLayout for SEO
+  const seoConfig = {
+    title: 'TIM - This is Mine | Personal Server Solutions Made in Ireland',
+    description: 'Own your digital infrastructure with TIM personal servers. No cloud dependencies, no subscriptions, no compromise. Pre-orders start January 2026.',
+    keywords: 'personal server, self hosting, privacy, data ownership, home server, ireland, TIM, digital independence',
+    type: 'website' as const
+  };
 
   const features = [
     {

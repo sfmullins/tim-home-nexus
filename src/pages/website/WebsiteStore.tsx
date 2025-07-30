@@ -7,6 +7,13 @@ import { Badge } from '@/components/ui/badge';
 
 const WebsiteStore = () => {
   const { t } = useTranslation();
+  
+  const seoConfig = {
+    title: 'TIM Store - Personal Server Configurations | TIM',
+    description: 'Choose from 4 TIM configurations: Tiny TIM (€299), Just TIM (€449), TIM Pro (€699), TIM Max (€1299). Pre-orders start January 2026.',
+    keywords: 'TIM store, personal server price, home server cost, self hosting hardware, N100 server, Ryzen server',
+    type: 'product' as const
+  };
 
   const products = [
     {
