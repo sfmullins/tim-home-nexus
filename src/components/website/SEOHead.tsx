@@ -43,7 +43,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
     "@type": "Organization",
     "name": "TIM - This is Mine",
     "url": "https://thisismine.io",
-    "logo": `${window.location.origin}/tim-logo.png`,
+    "logo": `${window.location.origin}/TIM_Logo.png`,
     "description": description,
     "foundingDate": "2024",
     "foundingLocation": {
@@ -94,7 +94,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
       "name": "TIM - This is Mine",
       "logo": {
         "@type": "ImageObject",
-        "url": `${window.location.origin}/tim-logo.png`
+        "url": `${window.location.origin}/TIM_Logo.png`
       }
     },
     "datePublished": article.publishedTime,

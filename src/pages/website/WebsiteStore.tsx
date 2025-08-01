@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { AlertCircle } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const WebsiteStore = () => {
   const [searchParams] = useSearchParams();
@@ -44,8 +46,7 @@ const WebsiteStore = () => {
         ram: [{ size: '32GB', price: 100 }],
         storage: [{ size: '1TB', price: 100 }, { size: '2TB', price: 250 }]
       },
-      popular: true,
-      savings: '€50 vs upgrading Tiny TIM'
+      popular: true
     },
     {
       id: 'tim-pro',
@@ -105,10 +106,17 @@ const WebsiteStore = () => {
             </p>
           </div>
         )}
-        <div className="flex justify-center space-x-2 text-sm text-muted-foreground">
-          <span>* 50% discount when purchased with hardware</span>
-          <span>** One-time jailbreak fee for TIM Pro</span>
-        </div>
+        
+        {/* Explanation of asterisk conditions */}
+        <Alert className="max-w-4xl mx-auto">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription className="text-left">
+            <div className="space-y-1">
+              <div><strong>*</strong> Game Streaming & Downloads software available with 50% discount when purchased with hardware</div>
+              <div><strong>**</strong> TIM Pro includes one-time jailbreak fee of €350 for full system access and custom software installation</div>
+            </div>
+          </AlertDescription>
+        </Alert>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-8">
@@ -123,9 +131,6 @@ const WebsiteStore = () => {
             <CardHeader className="text-center space-y-2">
               <CardTitle className="text-2xl">{product.name}</CardTitle>
               <div className="text-3xl font-bold text-primary">€{product.price}</div>
-              {product.savings && (
-                <div className="text-sm text-success">{product.savings}</div>
-              )}
             </CardHeader>
 
             <CardContent className="space-y-6">

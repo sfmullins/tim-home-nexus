@@ -56,7 +56,7 @@ const UpgradeSuggestion: React.FC<UpgradeSuggestionProps> = ({ currentProduct, o
         
         <div className="text-center space-y-3">
           <div className="text-lg font-semibold text-success">
-            Save {currencySymbol}50 vs upgrading Tiny TIM
+            Recommended Configuration
           </div>
           <Button onClick={onUpgrade} className="w-full" size="lg">
             Switch to Just TIM

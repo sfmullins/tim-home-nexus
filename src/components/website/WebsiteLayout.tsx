@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import LocaleSelector from '@/components/website/LocaleSelector';
 import SEOHead from '@/components/website/SEOHead';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import timLogo from '@/assets/tim-logo.png';
+import timLogo from '@/assets/TIM_Logo.png';
 
 interface WebsiteLayoutProps {
   children: React.ReactNode;

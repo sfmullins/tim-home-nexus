@@ -6,8 +6,6 @@ type Theme = 'dark' | 'light' | 'system';
 type ThemeProviderContextType = {
   theme: string | undefined;
   setTheme: (theme: Theme) => void;
-  isConsumerMode: boolean;
-  isDeveloperMode: boolean;
 };
 
 const ThemeProviderContext = createContext<ThemeProviderContextType | undefined>(undefined);
@@ -23,14 +21,9 @@ export function ThemeProvider({
     setMounted(true);
   }, []);
 
-  const isConsumerMode = theme === 'light';
-  const isDeveloperMode = theme === 'dark';
-
   const value = {
     theme,
     setTheme: (newTheme: Theme) => setTheme(newTheme),
-    isConsumerMode,
-    isDeveloperMode,
   };
 
   if (!mounted) {

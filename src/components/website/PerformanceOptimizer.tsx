@@ -4,7 +4,7 @@ const PerformanceOptimizer: React.FC = () => {
   useEffect(() => {
     // Preload critical resources
     const preloadResources = [
-      '/tim-logo.png',
+      '/TIM_Logo.png',
       '/tim-social-share.jpg'
     ];
 

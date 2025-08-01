@@ -28,8 +28,7 @@ export const products: ProductConfig[] = [
       { id: 'storage-2tb', name: '2TB M.2', price: 250, description: 'Upgrade to 2TB storage' }
     ],
     allowsJailbreak: false,
-    popular: true,
-    savings: '€50 vs upgrading Tiny TIM'
+    popular: true
   },
   {
     id: 'tim-pro',

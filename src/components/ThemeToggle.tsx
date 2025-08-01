@@ -24,13 +24,11 @@ export function ThemeToggle() {
       <DropdownMenuContent align="end" className="bg-popover border border-border">
         <DropdownMenuItem onClick={() => setTheme('light')} className="cursor-pointer">
           <Sun className="h-4 w-4 mr-2" />
-          <span>Consumer Mode</span>
-          <span className="ml-auto text-xs text-muted-foreground">Light</span>
+          <span>Light Theme</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('dark')} className="cursor-pointer">
           <Moon className="h-4 w-4 mr-2" />
-          <span>Developer Mode</span>
-          <span className="ml-auto text-xs text-muted-foreground">Dark</span>
+          <span>Dark Theme</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('system')} className="cursor-pointer">
           <Monitor className="h-4 w-4 mr-2" />

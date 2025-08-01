@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Activity, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import timLogo from "@/assets/tim-logo.png";
+import timLogo from "@/assets/TIM_Logo.png";
 import SpeedTest from "./SpeedTest";
 
 const DashboardHeader = () => {
@@ -24,7 +24,7 @@ const DashboardHeader = () => {
       <div className="flex items-center gap-4">
         <img src={timLogo} alt="Tim Logo" className="w-12 h-12" />
         <div>
-          <h1 className="text-3xl font-bold text-foreground">T.I.M</h1>
+          <h1 className="text-3xl font-bold text-foreground">TIM</h1>
         </div>
       </div>
       <div className="flex items-center gap-4">
