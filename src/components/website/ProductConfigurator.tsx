@@ -9,6 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Separator } from '@/components/ui/separator';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { ChevronRight, Check, Star, Zap, Copy } from 'lucide-react';
 import UpgradeSuggestion from './UpgradeSuggestion';
 import CheckoutButton from './CheckoutButton';
@@ -22,12 +24,14 @@ const ProductConfigurator = () => {
   const [shippingAddress, setShippingAddress] = useState({});
   const [billingAddress, setBillingAddress] = useState({});
   const [sameAsShipping, setSameAsShipping] = useState(true);
+  const [laserEngraving, setLaserEngraving] = useState({ enabled: false, text: '' });
 
   const steps = [
     { id: 1, name: 'Choose Model', icon: Star },
     { id: 2, name: 'Configure Hardware', icon: Zap },
     { id: 3, name: 'Add Software', icon: Check },
-    { id: 4, name: 'Review & Order', icon: ChevronRight }
+    { id: 4, name: 'Personalization', icon: Copy },
+    { id: 5, name: 'Review & Order', icon: ChevronRight }
   ];
 
   const selectProduct = (product: ProductConfig) => {
@@ -51,7 +55,11 @@ const ProductConfigurator = () => {
   const formatPrice = (price: number) => `${currencySymbol}${price}`;
 
   // Configuration Summary Component
-  const ConfigurationSummary = ({ configuration, formatPrice }: { configuration: ConfigurationState, formatPrice: (price: number) => string }) => (
+  const ConfigurationSummary = ({ configuration, formatPrice, laserEngraving }: { 
+    configuration: ConfigurationState, 
+    formatPrice: (price: number) => string,
+    laserEngraving?: { enabled: boolean; text: string }
+  }) => (
     <Card className="sticky top-4">
       <CardHeader>
         <CardTitle className="text-lg">Configuration Summary</CardTitle>
@@ -95,6 +103,13 @@ const ProductConfigurator = () => {
             <div className="flex justify-between text-sm">
               <span>Jailbreak Access</span>
               <span>+{formatPrice(configuration.selectedProduct.jailbreakPrice)}</span>
+            </div>
+          )}
+
+          {laserEngraving?.enabled && (
+            <div className="flex justify-between text-sm">
+              <span>Laser Engraving</span>
+              <span>Included</span>
             </div>
           )}
 
@@ -372,65 +387,14 @@ const ProductConfigurator = () => {
 
           {/* Configuration Summary */}
           <div className="space-y-6">
-            <Card className="sticky top-4">
-              <CardHeader>
-                <CardTitle className="text-lg">Configuration Summary</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span>Base {configuration.selectedProduct.name}</span>
-                    <span>{formatPrice(configuration.selectedProduct.basePrice)}</span>
-                  </div>
-                  
-                  {configuration.selectedRam && (
-                    <div className="flex justify-between text-sm">
-                      <span>RAM: {configuration.selectedRam.name}</span>
-                      <span>+{formatPrice(configuration.selectedRam.price)}</span>
-                    </div>
-                  )}
-                  
-                  {configuration.selectedStorage && (
-                    <div className="flex justify-between text-sm">
-                      <span>Storage: {configuration.selectedStorage.name}</span>
-                      <span>+{formatPrice(configuration.selectedStorage.price)}</span>
-                    </div>
-                  )}
-                  
-                  {configuration.selectedExternal && (
-                    <div className="flex justify-between text-sm">
-                      <span>External: {configuration.selectedExternal.name}</span>
-                      <span>+{formatPrice(configuration.selectedExternal.price)}</span>
-                    </div>
-                  )}
-                  
-                  {configuration.selectedGpu && (
-                    <div className="flex justify-between text-sm">
-                      <span>GPU: {configuration.selectedGpu.name}</span>
-                      <span>+{formatPrice(configuration.selectedGpu.price)}</span>
-                    </div>
-                  )}
-                  
-                  {configuration.includeJailbreak && configuration.selectedProduct.jailbreakPrice && (
-                    <div className="flex justify-between text-sm">
-                      <span>Jailbreak Access</span>
-                      <span>+{formatPrice(configuration.selectedProduct.jailbreakPrice)}</span>
-                    </div>
-                  )}
-                </div>
-                
-                <Separator />
-                
-                <div className="flex justify-between font-bold text-lg">
-                  <span>Total</span>
-                  <span>{formatPrice(configuration.totalPrice)}</span>
-                </div>
-                
-                <Button className="w-full" onClick={() => setStep(3)}>
-                  Continue to Software
-                </Button>
-              </CardContent>
-            </Card>
+            <ConfigurationSummary 
+              configuration={configuration}
+              formatPrice={formatPrice}
+              laserEngraving={laserEngraving}
+            />
+            <Button className="w-full" onClick={() => setStep(3)}>
+              Continue to Software
+            </Button>
           </div>
         </div>
       </div>
@@ -522,25 +486,117 @@ const ProductConfigurator = () => {
               <ConfigurationSummary 
                 configuration={configuration}
                 formatPrice={formatPrice}
+                laserEngraving={laserEngraving}
               />
             </div>
           )}
 
           <div className="text-center pt-6">
             <Button onClick={() => setStep(4)} size="lg">
+              Continue to Personalization
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {/* Step 4: Personalization (Laser Engraving) */}
+      {step === 4 && (
+        <div className="space-y-8">
+          <div className="text-center space-y-4">
+            <h2 className="text-3xl font-bold text-foreground">Personalize Your TIM</h2>
+            <p className="text-muted-foreground">Add laser engraving for a personal touch</p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Laser Engraving</CardTitle>
+                  <p className="text-sm text-muted-foreground">
+                    Custom laser engraving on the top right of your TIM case. Free with every order.
+                  </p>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox 
+                      id="enableEngraving"
+                      checked={laserEngraving.enabled}
+                      onCheckedChange={(checked) => setLaserEngraving(prev => ({ ...prev, enabled: !!checked }))}
+                    />
+                    <Label htmlFor="enableEngraving" className="text-sm font-medium">
+                      Enable laser engraving (Included)
+                    </Label>
+                  </div>
+                  
+                  {laserEngraving.enabled && (
+                    <div className="space-y-2">
+                      <Label htmlFor="engravingText" className="text-sm font-medium">
+                        Engraving Text (max 20 characters)
+                      </Label>
+                      <Input
+                        id="engravingText"
+                        placeholder="Enter text to engrave..."
+                        value={laserEngraving.text}
+                        maxLength={20}
+                        onChange={(e) => setLaserEngraving(prev => ({ ...prev, text: e.target.value }))}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Engraving will be placed on the top right of the case for easy manufacturing.
+                        Only alphanumeric characters and basic symbols allowed.
+                      </p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Preview</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="border-2 border-dashed border-muted rounded-lg p-8 text-center">
+                    <div className="w-32 h-20 mx-auto border border-border rounded-md relative bg-muted/20">
+                      <div className="text-xs text-center pt-6">TIM Case</div>
+                      {laserEngraving.enabled && laserEngraving.text && (
+                        <div className="absolute top-1 right-1 text-xs font-mono bg-primary/10 px-1 rounded">
+                          {laserEngraving.text}
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      {laserEngraving.enabled ? 'Engraving will appear in top right' : 'No engraving selected'}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="space-y-6">
+              {configuration && (
+                <ConfigurationSummary 
+                  configuration={configuration}
+                  formatPrice={formatPrice}
+                  laserEngraving={laserEngraving}
+                />
+              )}
+            </div>
+          </div>
+
+          <div className="text-center pt-6">
+            <Button onClick={() => setStep(5)} size="lg">
               Continue to Review
             </Button>
           </div>
         </div>
       )}
 
-      {/* Step 4: Review & Checkout */}
-      {step === 4 && (
-        <div className="space-y-6">
-          <h2 className="text-2xl font-bold text-center">Review & Checkout</h2>
-          <p className="text-muted-foreground text-center">
-            Final review of your TIM configuration
-          </p>
+      {/* Step 5: Review & Checkout */}
+      {step === 5 && (
+        <div className="space-y-8">
+          <div className="text-center space-y-4">
+            <h2 className="text-3xl font-bold text-foreground">Review & Complete Order</h2>
+            <p className="text-muted-foreground">Final review of your TIM configuration</p>
+          </div>
 
           {configuration && (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -604,6 +660,13 @@ const ProductConfigurator = () => {
                       </div>
                     )}
 
+                    {laserEngraving.enabled && (
+                      <div className="space-y-2">
+                        <h4 className="font-semibold">Personalization</h4>
+                        <p className="text-sm text-muted-foreground">• Laser engraving: "{laserEngraving.text}" (top right)</p>
+                      </div>
+                    )}
+
                     {configuration.includeJailbreak && (
                       <div className="space-y-2">
                         <h4 className="font-semibold">Additional Features</h4>
@@ -630,6 +693,7 @@ const ProductConfigurator = () => {
                 <ConfigurationSummary 
                   configuration={configuration}
                   formatPrice={formatPrice}
+                  laserEngraving={laserEngraving}
                 />
                 
                 <div className="space-y-3">
