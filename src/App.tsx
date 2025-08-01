@@ -25,6 +25,7 @@ import WebsiteBlog from "./pages/website/WebsiteBlog";
 import ProductSpecs from "./components/website/ProductSpecs";
 import { LocaleProvider } from "./contexts/LocaleContext";
 import { ConfigurationProvider } from "./contexts/ConfigurationContext";
+import { ThemeProvider } from "./components/ThemeProvider";
 import { HelmetProvider } from 'react-helmet-async';
 import "./i18n";
 
@@ -33,9 +34,10 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <HelmetProvider>
-      <LocaleProvider>
-        <ConfigurationProvider>
-          <TooltipProvider>
+      <ThemeProvider>
+        <LocaleProvider>
+          <ConfigurationProvider>
+            <TooltipProvider>
         <Toaster />
         <Sonner />
         <GDPRConsentBanner />
@@ -105,11 +107,12 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
-        </TooltipProvider>
-      </ConfigurationProvider>
-    </LocaleProvider>
-  </HelmetProvider>
-</QueryClientProvider>
+            </TooltipProvider>
+          </ConfigurationProvider>
+        </LocaleProvider>
+      </ThemeProvider>
+    </HelmetProvider>
+  </QueryClientProvider>
 );
 
 export default App;

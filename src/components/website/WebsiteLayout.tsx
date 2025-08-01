@@ -5,7 +5,8 @@ import { useLocale } from '@/contexts/LocaleContext';
 import { Button } from '@/components/ui/button';
 import LocaleSelector from '@/components/website/LocaleSelector';
 import SEOHead from '@/components/website/SEOHead';
-import timLogo from '@/assets/tim-logo.png';
+import { ThemeToggle } from '@/components/ThemeToggle';
+import timLogo from '@/assets/TIM_Logo.png';
 
 interface WebsiteLayoutProps {
   children: React.ReactNode;
@@ -68,6 +69,7 @@ const WebsiteLayout: React.FC<WebsiteLayoutProps> = ({ children, seo }) => {
             </div>
 
             <div className="flex items-center space-x-4">
+              <ThemeToggle />
               <LocaleSelector />
               <Button asChild variant="outline">
                 <Link to="/">{t('nav.app')}</Link>
@@ -92,7 +94,7 @@ const WebsiteLayout: React.FC<WebsiteLayoutProps> = ({ children, seo }) => {
                 <span className="font-bold text-foreground">TIM</span>
               </div>
               <p className="text-sm text-muted-foreground">
-                Own your digital infrastructure. Keep your data local.
+                Premium personal servers. Crafted in Ireland. Own your data forever.
               </p>
             </div>
             
@@ -127,7 +129,7 @@ const WebsiteLayout: React.FC<WebsiteLayoutProps> = ({ children, seo }) => {
           </div>
           
           <div className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground">
-            <p>&copy; 2024 TIM. Made in Ireland. No cloud. No subscriptions. No compromise.</p>
+            <p>&copy; 2024 TIM. Proudly crafted in Ireland. Premium quality. Lifetime ownership. No subscriptions.</p>
           </div>
         </div>
       </footer>

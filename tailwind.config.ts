@@ -85,12 +85,15 @@ export default {
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-accent': 'var(--gradient-accent)',
-				'gradient-surface': 'var(--gradient-surface)'
+				'gradient-surface': 'var(--gradient-surface)',
+				'gradient-premium': 'var(--gradient-premium)',
+				'gradient-hero': 'var(--gradient-hero)'
 			},
 			boxShadow: {
 				'primary': 'var(--shadow-primary)',
 				'accent': 'var(--shadow-accent)',
-				'glow': 'var(--shadow-glow)'
+				'premium': 'var(--shadow-premium)',
+				'subtle': 'var(--shadow-subtle)'
 			},
 			keyframes: {
 				'accordion-down': {
