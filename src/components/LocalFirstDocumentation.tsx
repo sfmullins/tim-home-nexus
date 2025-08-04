@@ -313,6 +313,105 @@ const LocalFirstDocumentation = () => {
             </CardContent>
           </Card>
         </TabsContent>
+
+        <TabsContent value="sync" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <GitBranch className="h-5 w-5" />
+                Cloud Sync (Optional)
+              </CardTitle>
+              <CardDescription>
+                Understand TIM's optional cloud sync while maintaining local-first principles
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200">
+                <h4 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">Local-First + Optional Cloud</h4>
+                <p className="text-sm text-blue-600 dark:text-blue-400">
+                  TIM's cloud sync is fundamentally different from traditional cloud storage. Your data stays local by default,
+                  and cloud sync is an optional backup and synchronization tool you control.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-green-600">How Cloud Sync Works</h4>
+                  <ul className="space-y-2 text-sm">
+                    <li className="flex items-start gap-2">
+                      <HardDrive className="h-4 w-4 mt-0.5 text-green-500" />
+                      <span>Primary data always stays on your TIM device</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Shield className="h-4 w-4 mt-0.5 text-blue-500" />
+                      <span>End-to-end encrypted backups when enabled</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Users className="h-4 w-4 mt-0.5 text-purple-500" />
+                      <span>Sync between your own TIM devices only</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Eye className="h-4 w-4 mt-0.5 text-amber-500" />
+                      <span>You control what syncs and when</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div className="space-y-3">
+                  <h4 className="font-semibold text-amber-600">User Control</h4>
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    <li>• Cloud sync is completely optional</li>
+                    <li>• Disable internet connectivity anytime via physical switch</li>
+                    <li>• Select which folders/files to sync</li>
+                    <li>• Choose your own cloud provider or self-host</li>
+                    <li>• Full device functionality without cloud connection</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <h4 className="font-semibold mb-3">Conflict Resolution</h4>
+                <p className="text-sm text-muted-foreground mb-3">
+                  When the same file is modified on multiple devices, TIM uses intelligent conflict resolution 
+                  to preserve all versions and let you choose how to merge changes.
+                </p>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowConflictDemo(true)}
+                  className="gap-2"
+                >
+                  <GitBranch className="h-4 w-4" />
+                  Try Interactive Demo
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-6">
+                <div className="p-3 bg-green-50 dark:bg-green-950/20 rounded border border-green-200">
+                  <h5 className="font-medium text-green-600 mb-1">Privacy</h5>
+                  <p className="text-xs text-green-600">Your files are encrypted before leaving your device</p>
+                </div>
+                <div className="p-3 bg-blue-50 dark:bg-blue-950/20 rounded border border-blue-200">
+                  <h5 className="font-medium text-blue-600 mb-1">Reliability</h5>
+                  <p className="text-xs text-blue-600">Multiple backup destinations supported</p>
+                </div>
+                <div className="p-3 bg-purple-50 dark:bg-purple-950/20 rounded border border-purple-200">
+                  <h5 className="font-medium text-purple-600 mb-1">Performance</h5>
+                  <p className="text-xs text-purple-600">Incremental sync saves bandwidth</p>
+                </div>
+              </div>
+
+              <div className="mt-6 p-4 bg-amber-50 dark:bg-amber-950/20 rounded-lg border border-amber-200">
+                <h4 className="font-semibold text-amber-700 dark:text-amber-300 mb-2">Important: You Stay in Control</h4>
+                <ul className="text-sm text-amber-600 dark:text-amber-400 space-y-1">
+                  <li>• Cloud sync never compromises local-first principles</li>
+                  <li>• Your device works fully offline even with sync enabled</li>
+                  <li>• You can change cloud providers or disable sync anytime</li>
+                  <li>• No vendor lock-in - your data stays accessible locally</li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
       </Tabs>
     </div>
   );

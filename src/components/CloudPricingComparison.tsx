@@ -139,7 +139,7 @@ const CloudPricingComparison = () => {
               <CardContent className="space-y-3">
                 <div className="text-center">
                   <div className={`text-2xl font-bold ${isProfit ? 'text-green-600' : 'text-red-600'}`}>
-                    {isProfit ? '+' : ''}€{Math.abs(calc.totalSavings)}
+                    {isProfit ? '+' : ''}€{Math.round(Math.abs(calc.totalSavings))}
                   </div>
                   <div className="text-sm text-muted-foreground">
                     {selectedYears}-year {isProfit ? 'savings' : 'extra cost'}
@@ -150,7 +150,7 @@ const CloudPricingComparison = () => {
                   <div className="flex justify-between">
                     <span>Monthly equivalent:</span>
                     <span className={isProfit ? 'text-green-600' : 'text-red-600'}>
-                      {isProfit ? '+' : ''}€{Math.abs(monthlyEquivalent).toFixed(2)}/mo
+                      {isProfit ? '+' : ''}€{Math.round(Math.abs(monthlyEquivalent))}/mo
                     </span>
                   </div>
                   
@@ -181,7 +181,7 @@ const CloudPricingComparison = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="text-center">
               <div className="text-3xl font-bold text-primary">
-                €{calculations.reduce((sum, calc) => sum + Math.max(0, calc.totalSavings), 0)}
+                €{Math.round(calculations.reduce((sum, calc) => sum + Math.max(0, calc.totalSavings), 0))}
               </div>
               <div className="text-sm text-muted-foreground">Best case {selectedYears}-year savings</div>
             </div>

@@ -17,7 +17,7 @@ const CurrencyDisplay: React.FC<CurrencyDisplayProps> = ({ amount, className = '
       case 'USD':
         return Math.round(baseAmount * 1.10); // Mock conversion rate
       default:
-        return baseAmount; // EUR
+        return Math.round(baseAmount); // EUR - always round to whole numbers
     }
   };
 
