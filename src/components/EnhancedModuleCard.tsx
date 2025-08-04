@@ -10,7 +10,7 @@ import {
   Wifi, WifiOff, AlertTriangle, CheckCircle, Zap, Globe, HardDrive
 } from "lucide-react";
 import { useState } from "react";
-import type { EnhancedModuleData, ModuleCapability } from "@/hooks/useModuleSystem";
+import type { EnhancedModuleData, ModuleCapability } from "@/types/modules";
 
 interface EnhancedModuleCardProps {
   module: EnhancedModuleData;
