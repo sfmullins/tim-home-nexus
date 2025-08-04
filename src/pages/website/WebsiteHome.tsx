@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Shield, Leaf, Award, Crown, Heart, Lock } from 'lucide-react';
 import { useTheme } from 'next-themes';
-import tinyTimImage from '@/assets/Tiny Tim.png';
-import timMaxImage from '@/assets/TIM Max - Brushed Aluminium.png';
+import tinyTimImage from '@/assets/P1 - Tiny Tim.png';
+import timMaxImage from '@/assets/P4 - TIM Max - Brushed Aluminium.png';
 
 const WebsiteHome = () => {
   const { t } = useTranslation();
