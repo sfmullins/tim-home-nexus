@@ -151,7 +151,7 @@ export class CloudPricingCalculator {
   };
 
   calculateSavings(
-    timModel: 'tim-tiny' | 'tim-just' | 'tim-pro' | 'tim-max',
+    timModel: keyof typeof this.timPricing,
     storageNeeded: number
   ): SavingsCalculation[] {
     const tim = this.timPricing[timModel];
@@ -181,7 +181,7 @@ export class CloudPricingCalculator {
   }
 
   getTotalLifetimeSavings(
-    timModel: 'tim-tiny' | 'tim-just' | 'tim-pro' | 'tim-max',
+    timModel: keyof typeof this.timPricing,
     storageNeeded: number,
     yearsOfUse: number = 5
   ): { provider: string; tier: string; totalSavings: number }[] {

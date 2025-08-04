@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
+import OnboardingPage from "./pages/OnboardingPage";
 import InternetControlPage from "./pages/InternetControlPage";
 import SoftwareAddonPage from "./pages/SoftwareAddonPage";
 import FileServer from "./components/modules/FileServer";
@@ -47,6 +48,7 @@ const App = () => (
             {/* App Routes */}
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/onboarding" element={<OnboardingPage />} />
             <Route path="/internet-control" element={<InternetControlPage />} />
             <Route path="/files" element={<FileServer />} />
             <Route path="/smart-home" element={<SmartHome />} />
