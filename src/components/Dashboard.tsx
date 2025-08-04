@@ -1,24 +1,36 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import type { User, Session } from '@supabase/supabase-js';
 import ModuleCard from "./ModuleCard";
 import DashboardHeader from "./DashboardHeader";
 import ServerStatus from "./ServerStatus";
 import QuickAccessBar from "./QuickAccessBar";
 import { useBookmarks, ModuleData } from "@/hooks/useBookmarks";
+import { useLocalAuth } from "@/hooks/useLocalAuth";
+import { useInternetControl } from "@/hooks/useInternetControl";
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { user, isAuthenticated, loading } = useLocalAuth();
+  const { isConnected } = useInternetControl();
   const {
     bookmarkedIds,
     toggleBookmark,
     canBookmark,
     getBookmarkTooltip
   } = useBookmarks();
+
+  const getModuleStatus = (moduleId: string): "online" | "offline" => {
+    // Local-only modules are always online
+    const localModules = ["file-server", "smart-home", "vpn-access"];
+    if (localModules.includes(moduleId)) return "online";
+    
+    // Internet-required modules depend on connection
+    const internetModules = ["downloads", "safety-net", "email-storage"];
+    if (internetModules.includes(moduleId)) return isConnected ? "online" : "offline";
+    
+    // Hybrid modules are always available but with limited features when offline
+    return "online";
+  };
 
   const [modules, setModules] = useState<ModuleData[]>([{
     id: "file-server",
@@ -39,7 +51,7 @@ const Dashboard = () => {
   }, {
     id: "downloads",
     title: "Downloads",
-    description: "Manage torrents and downloads remotely",
+    description: "Manage torrents and downloads remotely (requires internet)",
     icon: "download",
     status: "offline",
     isBookmarked: false,
@@ -49,13 +61,13 @@ const Dashboard = () => {
     title: "Game Streaming",
     description: "Stream games from TIM to your device",
     icon: "gamepad",
-    status: "offline",
+    status: "online",
     isBookmarked: false,
     purchased: false
   }, {
     id: "email-storage",
     title: "Email Storage",
-    description: "Host your email inbox content locally on TIM",
+    description: "Host your email inbox content locally (requires internet for sync)",
     icon: "mail",
     status: "offline",
     isBookmarked: false,
@@ -65,13 +77,13 @@ const Dashboard = () => {
     title: "Media Library",
     description: "Local media server for family-friendly content control",
     icon: "play",
-    status: "offline",
+    status: "online",
     isBookmarked: false,
     purchased: false
   }, {
     id: "safety-net",
     title: "Safety Net",
-    description: "Filter content and manage internet access by device and time",
+    description: "Filter content and manage internet access (requires internet)",
     icon: "safety",
     status: "offline",
     isBookmarked: false,
@@ -88,33 +100,18 @@ const Dashboard = () => {
 
   // Check authentication
   useEffect(() => {
-    // Set up auth state listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
-        
-        // Redirect to auth if not authenticated
-        if (!session?.user) {
-          navigate("/auth");
-        }
-      }
-    );
+    if (!loading && !isAuthenticated) {
+      navigate("/auth");
+    }
+  }, [isAuthenticated, loading, navigate]);
 
-    // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-      
-      if (!session?.user) {
-        navigate("/auth");
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [navigate]);
+  // Update module statuses based on internet connection
+  useEffect(() => {
+    setModules(prev => prev.map(module => ({
+      ...module,
+      status: getModuleStatus(module.id)
+    })));
+  }, [isConnected]);
 
   // Update bookmark status when bookmarkedIds changes
   useEffect(() => {

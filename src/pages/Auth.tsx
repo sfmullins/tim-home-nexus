@@ -1,6 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,99 +7,57 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Server, Mail } from "lucide-react";
+import { Loader2, Server, Wifi, WifiOff } from "lucide-react";
 import { PasswordStrength } from "@/components/PasswordStrength";
-import ReCAPTCHA from "react-google-recaptcha";
-import type { User, Session } from '@supabase/supabase-js';
+import { useLocalAuth } from "@/hooks/useLocalAuth";
+import { useInternetControl } from "@/hooks/useInternetControl";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [deviceName, setDeviceName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const [emailSent, setEmailSent] = useState(false);
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [isInitialSetup, setIsInitialSetup] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user, login, register, hasAnyUsers, isAuthenticated } = useLocalAuth();
+  const { status, isConnected } = useInternetControl();
 
   useEffect(() => {
-    // Set up auth state listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        
-        // Redirect to main page if authenticated
-        if (session?.user) {
-          navigate("/");
-        }
-      }
-    );
+    // Check if this is initial setup
+    setIsInitialSetup(!hasAnyUsers());
 
-    // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      
-      if (session?.user) {
-        navigate("/");
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [navigate]);
-
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!captchaToken) {
-      toast({
-        title: "Captcha required",
-        description: "Please complete the captcha verification.",
-        variant: "destructive"
-      });
-      return;
+    // Set default device name
+    if (!deviceName) {
+      setDeviceName(`TIM-${Math.random().toString(36).substr(2, 6).toUpperCase()}`);
     }
 
+    // Redirect if already authenticated
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate, hasAnyUsers, deviceName]);
+
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
     setLoading(true);
 
     try {
-      const redirectUrl = `${window.location.origin}/`;
+      const result = await register(email, password, username, deviceName);
       
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: redirectUrl,
-          captchaToken
-        }
-      });
-
-      if (error) {
-        if (error.message.includes("already registered")) {
-          toast({
-            title: "Account exists",
-            description: "This email is already registered. Please sign in instead.",
-            variant: "destructive"
-          });
-        } else {
-          toast({
-            title: "Sign up failed",
-            description: error.message,
-            variant: "destructive"
-          });
-        }
-        // Reset captcha on error
-        recaptchaRef.current?.reset();
-        setCaptchaToken(null);
-      } else {
-        setEmailSent(true);
+      if (result.error) {
         toast({
-          title: "Check your email",
-          description: "We've sent you a confirmation link to complete your registration."
+          title: "Registration failed",
+          description: result.error,
+          variant: "destructive"
         });
+      } else {
+        toast({
+          title: "Welcome to TIM!",
+          description: "Your local account has been created successfully."
+        });
+        navigate("/");
       }
     } catch (error) {
       toast({
@@ -108,9 +65,6 @@ const Auth = () => {
         description: "An unexpected error occurred. Please try again.",
         variant: "destructive"
       });
-      // Reset captcha on error
-      recaptchaRef.current?.reset();
-      setCaptchaToken(null);
     } finally {
       setLoading(false);
     }
@@ -121,31 +75,20 @@ const Auth = () => {
     setLoading(true);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
-
-      if (error) {
-        if (error.message.includes("Invalid login credentials")) {
-          toast({
-            title: "Login failed",
-            description: "Invalid email or password. Please check your credentials.",
-            variant: "destructive"
-          });
-        } else if (error.message.includes("Email not confirmed")) {
-          toast({
-            title: "Email not confirmed",
-            description: "Please check your email and click the confirmation link before signing in.",
-            variant: "destructive"
-          });
-        } else {
-          toast({
-            title: "Login failed",
-            description: error.message,
-            variant: "destructive"
-          });
-        }
+      const result = await login(email, password);
+      
+      if (result.error) {
+        toast({
+          title: "Login failed",
+          description: result.error,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Welcome back!",
+          description: "Successfully signed in to TIM."
+        });
+        navigate("/");
       }
     } catch (error) {
       toast({
@@ -178,75 +121,78 @@ const Auth = () => {
               <Server className="h-8 w-8 text-primary" />
             </div>
           </div>
-          <CardTitle className="text-2xl">TIM Server</CardTitle>
+          <CardTitle className="text-2xl">TIM</CardTitle>
           <CardDescription>
-            Access your personal home server
+            {isInitialSetup ? "Set up your local TIM server" : "Access your TIM server"}
           </CardDescription>
+          
+          {/* Internet Status Indicator */}
+          <div className="flex items-center justify-center gap-2 mt-4 p-2 rounded-lg bg-muted/50">
+            {isConnected ? (
+              <>
+                <Wifi className="h-4 w-4 text-green-500" />
+                <span className="text-sm text-muted-foreground">Internet Connected</span>
+              </>
+            ) : (
+              <>
+                <WifiOff className="h-4 w-4 text-amber-500" />
+                <span className="text-sm text-muted-foreground">Local Network Only</span>
+              </>
+            )}
+          </div>
         </CardHeader>
         <CardContent>
-          {emailSent && (
-            <Alert className="mb-4">
-              <Mail className="h-4 w-4" />
-              <AlertDescription>
-                Check your email for a confirmation link. You may need to check your spam folder.
-              </AlertDescription>
-            </Alert>
-          )}
-          
-          <Tabs defaultValue="signin" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="signin">Sign In</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
-            </TabsList>
+          {isInitialSetup ? (
+            <div className="space-y-4">
+              <Alert className="mb-4">
+                <Server className="h-4 w-4" />
+                <AlertDescription>
+                  Welcome! Set up your first TIM account. This will be stored locally on your device.
+                </AlertDescription>
+              </Alert>
+              
+              <form onSubmit={handleRegister} className="space-y-4">
             
-            <TabsContent value="signin" className="space-y-4">
-              <form onSubmit={handleSignIn} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="signin-email">Email</Label>
+                  <Label htmlFor="username">Username</Label>
                   <Input
-                    id="signin-email"
+                    id="username"
+                    type="text"
+                    placeholder="Choose a username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="device-name">Device Name</Label>
+                  <Input
+                    id="device-name"
+                    type="text"
+                    placeholder="Name for this TIM device"
+                    value={deviceName}
+                    onChange={(e) => setDeviceName(e.target.value)}
+                    required
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
                     type="email"
-                    placeholder="Enter your email"
+                    placeholder="Your email address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
                 </div>
+                
                 <div className="space-y-2">
-                  <Label htmlFor="signin-password">Password</Label>
+                  <Label htmlFor="password">Password</Label>
                   <Input
-                    id="signin-password"
-                    type="password"
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </div>
-                <Button type="submit" className="w-full" disabled={loading}>
-                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Sign In
-                </Button>
-              </form>
-            </TabsContent>
-            
-            <TabsContent value="signup" className="space-y-4">
-              <form onSubmit={handleSignUp} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="signup-email">Email</Label>
-                  <Input
-                    id="signup-email"
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signup-password">Password</Label>
-                  <Input
-                    id="signup-password"
+                    id="password"
                     type="password"
                     placeholder="Create a strong password"
                     value={password}
@@ -257,26 +203,106 @@ const Auth = () => {
                   <PasswordStrength password={password} />
                 </div>
                 
-                <div className="flex justify-center">
-                  <ReCAPTCHA
-                    ref={recaptchaRef}
-                    sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" // Test key
-                    onChange={setCaptchaToken}
-                    onExpired={() => setCaptchaToken(null)}
-                  />
-                </div>
-                
                 <Button 
                   type="submit" 
                   className="w-full" 
-                  disabled={loading || !isPasswordStrong() || !captchaToken}
+                  disabled={loading || !isPasswordStrong()}
                 >
                   {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Create Account
+                  Set Up TIM
                 </Button>
               </form>
-            </TabsContent>
-          </Tabs>
+            </div>
+          ) : (
+            <Tabs defaultValue="signin" className="w-full">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="signin">Sign In</TabsTrigger>
+                <TabsTrigger value="signup">Add User</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="signin" className="space-y-4">
+                <form onSubmit={handleSignIn} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="signin-email">Email</Label>
+                    <Input
+                      id="signin-email"
+                      type="email"
+                      placeholder="Enter your email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="signin-password">Password</Label>
+                    <Input
+                      id="signin-password"
+                      type="password"
+                      placeholder="Enter your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <Button type="submit" className="w-full" disabled={loading}>
+                    {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    Sign In
+                  </Button>
+                </form>
+              </TabsContent>
+              
+              <TabsContent value="signup" className="space-y-4">
+                <form onSubmit={handleRegister} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="new-username">Username</Label>
+                    <Input
+                      id="new-username"
+                      type="text"
+                      placeholder="Choose a username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      required
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="new-email">Email</Label>
+                    <Input
+                      id="new-email"
+                      type="email"
+                      placeholder="Enter email address"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="new-password">Password</Label>
+                    <Input
+                      id="new-password"
+                      type="password"
+                      placeholder="Create a strong password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      minLength={8}
+                    />
+                    <PasswordStrength password={password} />
+                  </div>
+                  
+                  <Button 
+                    type="submit" 
+                    className="w-full" 
+                    disabled={loading || !isPasswordStrong()}
+                  >
+                    {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    Add User
+                  </Button>
+                </form>
+              </TabsContent>
+            </Tabs>
+          )}
         </CardContent>
       </Card>
     </div>

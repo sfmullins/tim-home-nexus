@@ -1,19 +1,35 @@
 import { Button } from "@/components/ui/button";
-import { Activity, LogOut } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { Activity, LogOut, Wifi, WifiOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import timLogo from "@/assets/TIM_Logo.png";
 import SpeedTest from "./SpeedTest";
+import { useLocalAuth } from "@/hooks/useLocalAuth";
+import { useInternetControl } from "@/hooks/useInternetControl";
 
 const DashboardHeader = () => {
   const { toast } = useToast();
+  const { logout, user } = useLocalAuth();
+  const { isConnected, toggleInternet } = useInternetControl();
 
   const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
+    logout();
+    toast({
+      title: "Signed out",
+      description: "You have been signed out successfully."
+    });
+  };
+
+  const handleInternetToggle = async () => {
+    try {
+      await toggleInternet();
+      toast({
+        title: isConnected ? "Internet Disabled" : "Internet Enabled",
+        description: isConnected ? "TIM is now in local-only mode" : "TIM now has internet access"
+      });
+    } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to sign out. Please try again.",
+        description: "Failed to toggle internet access",
         variant: "destructive"
       });
     }
@@ -25,10 +41,28 @@ const DashboardHeader = () => {
         <img src={timLogo} alt="Tim Logo" className="w-12 h-12" />
         <div>
           <h1 className="text-3xl font-bold text-foreground">TIM</h1>
+          <p className="text-sm text-muted-foreground">{user?.deviceName}</p>
         </div>
       </div>
       <div className="flex items-center gap-4">
         <SpeedTest />
+        <Button 
+          variant={isConnected ? "default" : "outline"} 
+          size="sm"
+          onClick={handleInternetToggle}
+        >
+          {isConnected ? (
+            <>
+              <Wifi className="w-4 h-4" />
+              Connected
+            </>
+          ) : (
+            <>
+              <WifiOff className="w-4 h-4" />
+              Local Only
+            </>
+          )}
+        </Button>
         <Button variant="accent" size="sm">
           <Activity className="w-4 h-4" />
           Status
