@@ -25,6 +25,8 @@ export interface SavingsCalculation {
   timCost: number; // EUR one-time
 }
 
+export type TIMModel = 'tim-tiny' | 'tim-just' | 'tim-pro' | 'tim-max';
+
 // Static pricing data (updated with TIM firmware releases)
 export const cloudProviders: CloudProvider[] = [
   {
@@ -143,7 +145,7 @@ export const cloudProviders: CloudProvider[] = [
 
 export class CloudPricingCalculator {
   // TIM hardware costs (one-time purchase)
-  private readonly timPricing = {
+  private readonly timPricing: Record<TIMModel, { storage: number; cost: number }> = {
     'tim-tiny': { storage: 256, cost: 149 },
     'tim-just': { storage: 512, cost: 299 },
     'tim-pro': { storage: 1000, cost: 499 },
@@ -151,7 +153,7 @@ export class CloudPricingCalculator {
   };
 
   calculateSavings(
-    timModel: keyof typeof this.timPricing,
+    timModel: TIMModel,
     storageNeeded: number
   ): SavingsCalculation[] {
     const tim = this.timPricing[timModel];
@@ -181,7 +183,7 @@ export class CloudPricingCalculator {
   }
 
   getTotalLifetimeSavings(
-    timModel: keyof typeof this.timPricing,
+    timModel: TIMModel,
     storageNeeded: number,
     yearsOfUse: number = 5
   ): { provider: string; tier: string; totalSavings: number }[] {
@@ -196,7 +198,7 @@ export class CloudPricingCalculator {
   }
 
   getRecommendedTIMModel(storageNeeded: number): {
-    model: keyof typeof this.timPricing;
+    model: TIMModel;
     name: string;
     cost: number;
     storage: number;
@@ -211,7 +213,7 @@ export class CloudPricingCalculator {
         .sort((a, b) => b[1].storage - a[1].storage)[0];
       
       return {
-        model: maxModel[0] as keyof typeof this.timPricing,
+        model: maxModel[0] as TIMModel,
         name: maxModel[0].replace('tim-', 'TIM ').replace('-', ' ').toUpperCase(),
         cost: maxModel[1].cost,
         storage: maxModel[1].storage
@@ -220,7 +222,7 @@ export class CloudPricingCalculator {
 
     const recommended = models[0];
     return {
-      model: recommended[0] as keyof typeof this.timPricing,
+      model: recommended[0] as TIMModel,
       name: recommended[0].replace('tim-', 'TIM ').replace('-', ' ').toUpperCase(),
       cost: recommended[1].cost,
       storage: recommended[1].storage
