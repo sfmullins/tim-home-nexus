@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import OnboardingPage from "./pages/OnboardingPage";
+import MobileAppPage from "./pages/MobileAppPage";
 import InternetControlPage from "./pages/InternetControlPage";
 import SoftwareAddonPage from "./pages/SoftwareAddonPage";
 import FileServer from "./components/modules/FileServer";
@@ -49,6 +50,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/onboarding" element={<OnboardingPage />} />
+            <Route path="/mobile-app" element={<MobileAppPage />} />
             <Route path="/internet-control" element={<InternetControlPage />} />
             <Route path="/files" element={<FileServer />} />
             <Route path="/smart-home" element={<SmartHome />} />

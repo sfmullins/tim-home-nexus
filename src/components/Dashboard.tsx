@@ -4,9 +4,11 @@ import ModuleCard from "./ModuleCard";
 import DashboardHeader from "./DashboardHeader";
 import ServerStatus from "./ServerStatus";
 import QuickAccessBar from "./QuickAccessBar";
+import { InternetStatusBanner } from "./InternetStatusIndicators";
 import { useBookmarks, ModuleData } from "@/hooks/useBookmarks";
 import { useLocalAuth } from "@/hooks/useLocalAuth";
 import { useInternetControl } from "@/hooks/useInternetControl";
+import { Button } from "@/components/ui/button";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -18,6 +20,9 @@ const Dashboard = () => {
     canBookmark,
     getBookmarkTooltip
   } = useBookmarks();
+
+  // Check if onboarding is complete
+  const isOnboardingComplete = localStorage.getItem('tim-onboarding-complete') === 'true';
 
   const getModuleStatus = (moduleId: string): "online" | "offline" => {
     // Local-only modules are always online
@@ -98,12 +103,14 @@ const Dashboard = () => {
     purchased: true
   }]);
 
-  // Check authentication
+  // Check authentication and onboarding
   useEffect(() => {
     if (!loading && !isAuthenticated) {
       navigate("/auth");
+    } else if (!loading && isAuthenticated && !isOnboardingComplete) {
+      navigate("/onboarding");
     }
-  }, [isAuthenticated, loading, navigate]);
+  }, [isAuthenticated, loading, navigate, isOnboardingComplete]);
 
   // Update module statuses based on internet connection
   useEffect(() => {
@@ -183,14 +190,40 @@ const Dashboard = () => {
     <div className="min-h-screen bg-background p-4">
       <div className="max-w-6xl mx-auto mb-8">
         <DashboardHeader />
+        <InternetStatusBanner />
         <ServerStatus />
         <QuickAccessBar 
           bookmarkedModules={bookmarkedModules} 
           onModuleClick={handleModuleClick} 
         />
 
+        {/* Quick setup card for first-time users */}
+        {!isOnboardingComplete && (
+          <div className="mb-6">
+            <div className="bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20 rounded-lg p-6">
+              <h3 className="text-lg font-semibold mb-2">Complete Your Setup</h3>
+              <p className="text-muted-foreground mb-4">
+                Configure your platform and see potential cloud storage savings.
+              </p>
+              <Button onClick={() => navigate("/onboarding")}>
+                Continue Setup
+              </Button>
+            </div>
+          </div>
+        )}
+
         <div className="bg-card border border-border rounded-lg p-6">
-          <h2 className="text-2xl font-bold text-foreground mb-6">Store</h2>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-foreground">Modules</h2>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => navigate("/internet-control")}
+              className="flex items-center gap-2"
+            >
+              {isConnected ? "🌐" : "🔒"} Internet Control
+            </Button>
+          </div>
           
           {/* Purchased Modules Section */}
           {purchasedModules.length > 0 && (

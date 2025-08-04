@@ -46,6 +46,15 @@ const DashboardHeader = () => {
       </div>
       <div className="flex items-center gap-4">
         <SpeedTest />
+        
+        <Button 
+          variant="outline"
+          size="sm"
+          onClick={() => window.location.href = "/mobile-app"}
+        >
+          📱 Mobile App
+        </Button>
+        
         <Button 
           variant={isConnected ? "default" : "outline"} 
           size="sm"
@@ -63,10 +72,12 @@ const DashboardHeader = () => {
             </>
           )}
         </Button>
+        
         <Button variant="accent" size="sm">
           <Activity className="w-4 h-4" />
           Status
         </Button>
+        
         <Button variant="outline" size="sm" onClick={handleSignOut}>
           <LogOut className="w-4 h-4" />
           Sign Out
