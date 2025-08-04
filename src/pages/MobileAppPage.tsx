@@ -1,4 +1,4 @@
-import MobileAppPairing from "@/components/MobileAppPairing";
+import AdvancedMobileIntegration from "@/components/AdvancedMobileIntegration";
 
 const MobileAppPage = () => {
   return (
@@ -10,7 +10,7 @@ const MobileAppPage = () => {
             Pair your mobile device with TIM for remote access and control
           </p>
         </div>
-        <MobileAppPairing />
+        <AdvancedMobileIntegration />
       </div>
     </div>
   );
