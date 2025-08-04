@@ -215,14 +215,24 @@ const Dashboard = () => {
         <div className="bg-card border border-border rounded-lg p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-foreground">Modules</h2>
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => navigate("/internet-control")}
-              className="flex items-center gap-2"
-            >
-              {isConnected ? "🌐" : "🔒"} Internet Control
-            </Button>
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => navigate("/savings")}
+                className="flex items-center gap-2"
+              >
+                💰 Savings Calculator
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => navigate("/internet-control")}
+                className="flex items-center gap-2"
+              >
+                {isConnected ? "🌐" : "🔒"} Internet Control
+              </Button>
+            </div>
           </div>
           
           {/* Purchased Modules Section */}
