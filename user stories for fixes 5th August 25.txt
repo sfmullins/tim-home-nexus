@@ -1,0 +1,232 @@
+# Lovable.dev TIM Full User Stories & Acceptance Criteria
+
+---
+
+## Website
+
+### 1. Localized Branding  
+**User Story:**  
+As a visitor to the Lovable.dev website, I want clear Irish origin branding so that I feel confident about the product's authenticity and local roots.
+
+**Acceptance Criteria:**  
+- [ ] Homepage and about pages display "Proud to be Irish" (not "IE Proudly Made in Ireland").  
+- [ ] Guaranteed Irish logo is correctly displayed.  
+- [ ] A clickable link leads to a blog post explaining the assembly in Blessington.  
+- [ ] Location references are corrected to "Wicklow" and "Garden of Ireland."
+
+### 2. Hero Section CTA Contrast  
+**User Story:**  
+As a user on the homepage, I need the "Configure your TIM" call-to-action text to be visible in light mode.
+
+**Acceptance Criteria:**  
+- [ ] CTA text color switches to black in light mode.  
+- [ ] CTA remains readable in dark mode.
+
+### 3. Waitlist Call-To-Action  
+**User Story:**  
+As a potential customer, I want to join a waitlist from the homepage if pre-orders aren’t active.
+
+**Acceptance Criteria:**  
+- [ ] "Join waitlist" button exists below the pre-order CTA linking to the mailing list.
+
+### 4. Premium Quality Messaging  
+**User Story:**  
+As a user, I want the "Premium Quality" messaging to emphasize software design over hardware craftsmanship for clarity.
+
+**Acceptance Criteria:**  
+- [ ] Messaging distinctly highlights software design excellence.
+
+### 5. TIM Max Pricing  
+**User Story:**  
+As a buyer, I want the TIM Max price to be correctly listed.
+
+**Acceptance Criteria:**  
+- [ ] Price updated to 1499.  
+- [ ] “Developer Mode” phrasing used instead of “jailbreak.”
+
+### 6. Store Product Images  
+**User Story:**  
+As a shopper, I want clear images and color choices for all devices.
+
+**Acceptance Criteria:**  
+- [ ] All products have images.  
+- [ ] Pro model shows color options.
+
+### 7. Tiny TIM Upgrade Options  
+**User Story:**  
+As a Tiny TIM buyer, I want upgrade options removed to avoid confusion.
+
+**Acceptance Criteria:**  
+- [ ] No upgrade options on Tiny TIM product page.  
+- [ ] Banner promoting upgrade to Just TIM available.
+
+### 8. Tiny TIM Upgrade CTA Placement  
+**User Story:**  
+As a Tiny TIM buyer, I want upgrade offers to be presented non-pushy.
+
+**Acceptance Criteria:**  
+- [ ] Upgrade CTA appears below config options.  
+- [ ] “Continue” button instead of “Continue to Software.”  
+- [ ] Greyed out software features shown next page.  
+- [ ] 10% discount offer messaging included.
+
+### 9. Laser Engraving Option  
+**User Story:**  
+As a buyer, optional engraving should be available with limits and previews.
+
+**Acceptance Criteria:**  
+- [ ] Engraving costs €20, free only on Max.  
+- [ ] Maximum 10 characters.  
+- [ ] Preview and confirmation step included.
+
+### 10. Review Page Layout  
+**User Story:**  
+As a buyer, I want the order summary before address info.
+
+**Acceptance Criteria:**  
+- [ ] Configuration summary is topmost on review page.
+
+### 11. Just Tim Config Step Load  
+**User Story:**  
+As a configuring user, next pages load at the top and box selection is user-friendly.
+
+**Acceptance Criteria:**  
+- [ ] Page scrolls to top on load.  
+- [ ] Clicking anywhere on selection box toggles choice.
+
+### 12. Software Add-ons Savings  
+**User Story:**  
+As a buyer, I want savings info to clarify against in-app purchases.
+
+**Acceptance Criteria:**  
+- [ ] Savings message includes "*vs buying later in app."
+
+### 13. Tim Pro Terminology  
+**User Story:**  
+As a Tim Pro user, I want terminology updated for professionalism.
+
+**Acceptance Criteria:**  
+- [ ] “Jailbreak” replaced with “Enable Developer Mode.”
+
+### 14. Add-ons Persistence  
+**User Story:**  
+As a configurator, I want selected add-ons cleared when restarting config.
+
+**Acceptance Criteria:**  
+- [ ] Cart cleared when returning to step 1.  
+- [ ] User confirmed before discard.
+
+### 15. About Page Updates  
+**User Story:**  
+As a visitor, location and messaging should be accurate and informative.
+
+**Acceptance Criteria:**  
+- [ ] Location changed to “Guaranteed Irish” & “Wicklow.”  
+- [ ] “Garden of Ireland” added.  
+- [ ] “Resource Efficient” includes “From EUR per day.”  
+- [ ] Community section allows for Pro feedback/challenges.  
+- [ ] “Our Journey” references founder frustrations.
+
+### 16. Support Page  
+**User Story:**  
+As a user seeking support, I want accurate policy messaging.
+
+**Acceptance Criteria:**  
+- [ ] “Unlimited updates” changed to “Lifetime updates* until deprecated.”  
+- [ ] “Phone Support” available only for Pro users after login.
+
+### 17. Product Roadmap  
+**User Story:**  
+As a user, I want visibility on upcoming products/features.
+
+**Acceptance Criteria:**  
+- [ ] Roadmap page/section added with planned apps/hardware info.
+
+---
+
+## App
+
+### 18. Auth Branding  
+**User Story:**  
+As a user, I want consistent “This Is Mine” branding during setup/auth.
+
+**Acceptance Criteria:**  
+- [ ] Auth screen uses “Set up your local This Is Mine server.”  
+- [ ] Account login/setup offered first.
+
+### 19. Onboarding Founder Message  
+**User Story:**  
+As a new user, I want a founder welcome message to connect with the brand.
+
+**Acceptance Criteria:**  
+- [ ] Founder message is first onboarding step.
+
+### 20. Storage Savings Personalization  
+**User Story:**  
+As a device owner, storage savings reflect my device’s size.
+
+**Acceptance Criteria:**  
+- [ ] Generic savings message removed.  
+- [ ] Savings personalized by storage model.
+
+### 21. Skip Setup Button  
+**User Story:**  
+As a user, I want the skip setup button functional or removed.
+
+**Acceptance Criteria:**  
+- [ ] Button is fixed or removed.
+
+### 22. Folder Scan UX  
+**User Story:**  
+As a user, folder scan should help map and mirror folders to TIM.
+
+**Acceptance Criteria:**  
+- [ ] Scan focuses on structure mapping.  
+- [ ] Prompts for creating or mapping unrecognized folders.
+
+### 23. Setup Location  
+**User Story:**  
+As a user, I want setup fully on my own device without needing TIM display.
+
+**Acceptance Criteria:**  
+- [ ] No connected display required.  
+- [ ] QR/packaging directs to tim.local/setup or equivalent.
+
+### 24. Connection Speed UI  
+**User Story:**  
+As a user, I want a working “Test Connection” with clear latency feedback.
+
+**Acceptance Criteria:**  
+- [ ] Button renamed and functional.  
+- [ ] Latency color-coded: amber if >100ms, red if >500ms.
+
+### 25. Device Name Customization  
+**User Story:**  
+As a TIM user, I want my custom device name shown everywhere.
+
+**Acceptance Criteria:**  
+- [ ] Custom name overrides generic “T.I.M Server.”
+
+---
+
+## Files
+
+### 26. Global Search & Filters  
+**User Story:**  
+As a user, I want to search all files with filters to speed management.
+
+**Acceptance Criteria:**  
+- [ ] Search across all folders, not just current.  
+- [ ] Enables filtering by size, date, file type.
+
+---
+
+*End of User Stories document.*
+
+---
+
+If you want, I can also package this markdown file separately as `.md` or prepare a Notion import file with these stories. Just say!
+
+---
+
+**Please confirm if you want me to send the CSV as an actual `.csv` file and/or prepare a Notion database template with the issues and stories structured for import/sharing.**
